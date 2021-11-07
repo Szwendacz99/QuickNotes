@@ -71,3 +71,8 @@ form {
     border-radius: 15px;
 
 }
+
+.login-bottom-text {
+    font-size: small;
+    color: #32CEFF;
+}
