@@ -3,4 +3,13 @@
     src: url(../font/Roboto-Regular.ttf);
 }
 
-
+body {
+    color: white;
+    margin: 0;
+    font-size: 24px;
+    background: rgba(0, 0, 0, 0.5) url("../pictures/background.jpg");
+    background-size: cover;
+    background-blend-mode: darken;
+    font-family: "customroboto";
+    font-weight: 400;
+}

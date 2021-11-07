@@ -1,14 +1,21 @@
+@media screen and (max-device-width:640px), screen and (max-device-width:414px) {
+    body {
+        flex-direction: column;
+    }
+    .logo {
+        height: 20vh;
+    }
+    .login-form {
+        height: 80vh;
+    }
+}
+
 body {
     color: white;
     margin: 0;
     font-size: 24px;
     display: flex;
     flex-direction: row;
-    background: rgba(0, 0, 0, 0.5) url("../pictures/background.jpg");
-    background-size: cover;
-    background-blend-mode: darken;
-    font-family: "customroboto";
-    font-weight: 400;
 }
 
 h1 {
