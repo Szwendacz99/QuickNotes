@@ -8,13 +8,15 @@ body {
     height: fit-content;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    flex-flow: wrap-reverse;
+    align-items: flex-end;
     justify-content: end;
 }
 
 .dashboard-bt {
-    height: 5vw;
-    width: 5vw;
+    height: 5vh;
+    width: 5vh;
+    margin-right: 0.5vh;
     background-color: rgba(0, 0, 0, 0);
     background-size: cover;
     border: 0;
@@ -22,5 +24,43 @@ body {
 
 .new-note{
     background-image: url("../icons/add.png");
-    
+}
+.save{
+    background-image: url("../icons/save.png");
+}
+.tag{
+    background-image: url("../icons/tag.png");
+}
+.share{
+    background-image: url("../icons/shr-icon.png");
+}
+.change-view{
+    background-image: url("../icons/change_view.png");
+}
+.delete{
+    background-image: url("../icons/delete.png");
+}
+
+.user-menu-button {
+    background-color: #C4C4C4;
+    width: fit-content;
+    height: 5vh;
+    font-size: 2vh;
+}
+
+.top-panel{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.left-panel-button {
+    background-image: url("../icons/menu_icon.png");
+    height: 5vh;
+}
+
+@media screen and (max-device-width:640px), screen and (max-device-width:414px) {
+    .dashboard {
+        height: fit-content;
+    }
 }
