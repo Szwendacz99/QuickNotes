@@ -3,26 +3,99 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link rel="stylesheet" type="text/css" href="../css/editor.css">
+    <link rel="stylesheet" type="text/css" href="../css/leftpanel.css">
+
+    <script type="text/javascript" src="../js/editor.js"></script>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickNotes editor</title>
 </head>
 <body>
-    <div class="top-panel">
-        <button class="dashboard-bt left-panel-button" ></button>
-        <div class="dashboard">
-            <button class="dashboard-bt new-note" ></button>
-            <button class="dashboard-bt save" ></button>
-            <button class="dashboard-bt tag" ></button>
-            <button class="dashboard-bt share" ></button>
-            <button class="dashboard-bt change-view" ></button>
-            <button class="dashboard-bt delete" ></button>
-            <button class="user-menu-button">Maciej</button>
-            
-
+    <div class="left-panel-container" id="left-panel">
+        <button class="button-choose-tags">Choose tags ↓</button>
+    
+        <div class="left-panel-field-container">
+            <div class="left-panel-field-header">
+                Your notes:
+            </div>
+            <button class="left-panel-note-item">note one</button>
+            <button class="left-panel-note-item">another note</button>
+            <button class="left-panel-note-item">note with very long
+                name that need to
+                expand button
+                vertically</button>
+        </div>
+        <div class="left-panel-field-container">
+            <div class="left-panel-field-header">
+                Shared by You:
+            </div>
+            <div class="left-panel-field-subheader"> For User1:</div>
+            <button class="left-panel-note-item">note one</button>
+            <div class="left-panel-field-subheader"> For User2:</div>
+            <button class="left-panel-note-item">note with very long
+                name that need to
+                expand button
+                vertically</button>
+        </div>
+        <div class="left-panel-field-container">
+            <div class="left-panel-field-header">
+                Shared by others:
+            </div>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-header">
+                Shared by others:
+            </div>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+            <div class="left-panel-field-subheader"> From User1:</div>
+            <button class="left-panel-note-item">note for u</button>
+    
         </div>
     </div>
+    <div class="editor-container">
+        <div class="top-panel">
+            <button class="dashboard-bt left-panel-button" onclick="switchLeftPanel()"></button>
+            <div class="dashboard">
+                <button class="dashboard-bt new-note" ></button>
+                <button class="dashboard-bt save" ></button>
+                <button class="dashboard-bt tag" ></button>
+                <button class="dashboard-bt share" ></button>
+                <button class="dashboard-bt change-view" ></button>
+                <button class="dashboard-bt delete" ></button>
+                <button class="user-menu-button">Maciej</button>
+            </div>
+        </div>
+    </div>
+    
     
 </body>
 </html>
