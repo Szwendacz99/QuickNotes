@@ -8,6 +8,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     resize: horizontal;
+    min-width: 200px;
 }
 
 .button-choose-tags {
