@@ -1,0 +1,47 @@
+.left-panel-container {
+    height: 100vh;
+    width: 25vh;
+    background-color: rgba(122, 122, 122, 0.75);
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    resize: horizontal;
+}
+
+.button-choose-tags {
+    height: 5vh;
+    width: 100%;
+    font-size: 2vh;
+}
+
+.left-panel-field-container {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: 100%;
+    gap: 0.5vh;
+    border-width: 1px;
+    border-color: black;
+    border-style: outset;
+}
+
+.left-panel-field-header {
+    font-size: 2vh;
+    margin: 0.6vh;
+}
+
+.left-panel-field-subheader {
+    font-size: 1.5vh;
+    margin: 0.6vh;
+}
+
+.left-panel-note-item {
+    border: 0;
+    background-color: #B5E4FF;
+    border-radius: 1vh;
+    font-size: 1.5vh;
+    width: fit-content;
+    font-weight: bold;
+}
