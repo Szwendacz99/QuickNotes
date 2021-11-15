@@ -9,6 +9,7 @@ body {
     gap: 0.5vh;
     width: 100%;
     height: 100vh;
+    justify-content: space-evenly;
 }
 
 .dashboard {
@@ -87,7 +88,13 @@ body {
 }
 
 .editing-panel-title {
-    height: fit-content;
     text-align: center;
     font-weight: bold;
+    overflow-y: hidden;
+    resize: none;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+
 }
