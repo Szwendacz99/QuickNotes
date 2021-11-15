@@ -96,6 +96,7 @@ body {
     color: white;
     resize: none;
     width: 100%;
+    padding: 1vh;
 
 }
 
@@ -105,5 +106,5 @@ body {
     overflow-y: hidden;
     margin: 0;
     border: 0;
-
+    padding: 0.3vh;
 }
