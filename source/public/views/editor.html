@@ -13,8 +13,18 @@
     <title>QuickNotes editor</title>
 </head>
 <body>
+    <div class="overlay user-menu">
+        test
+    </div>
     <div class="left-panel-container" id="left-panel">
-        <button class="button-choose-tags">Choose tags ↓</button>
+        <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
+        <form id="choose-tags-form">
+            <button class="default-button">Save</button>
+            <label><input type="checkbox" value="tag 1">tag 1</label>
+            <label><input type="checkbox" value="tag 2" checked="checked">checked tag</label>
+            <label><input type="checkbox" value="some long named tag (why so long?)">some long named tag (why so long?)</label>
+            <label><input type="checkbox" value="tag 4 which ends here">tag 4 which ends here</label>
+        </form>
     
         <div class="left-panel-field-container">
             <div class="left-panel-field-header">
@@ -85,7 +95,7 @@
 
     <div class="editor-container">
         <div class="top-panel">
-            <button class="dashboard-bt left-panel-button" onclick="switchLeftPanel()"></button>
+            <button class="dashboard-bt left-panel-button" onclick="switchDisplay('left-panel', 'flex')"></button>
             <div class="dashboard">
                 <button class="dashboard-bt new-note" ></button>
                 <button class="dashboard-bt save" ></button>
@@ -101,7 +111,7 @@
 
             <div class="edit-textareas-container">
                 <textarea class="editing-panel" name="note_input">test</textarea>
-                <textarea class="editing-panel" disabled="disabled">test</textarea>
+                <textarea class="editing-panel" disabled="disabled" name="display">test</textarea>
             </div>
         </div>
     </div>

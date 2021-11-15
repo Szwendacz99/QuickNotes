@@ -46,3 +46,15 @@
     width: fit-content;
     font-weight: bold;
 }
+
+#choose-tags-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5vh;
+    font-size: 2vh;
+}
+#choose-tags-form label {
+    margin: 0.4vh;
+    display: flex;
+    flex-direction: row;
+}

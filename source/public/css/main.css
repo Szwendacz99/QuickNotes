@@ -4,7 +4,7 @@
 }
 
 * {
-    font-family: "customroboto";
+    font-family: "customroboto", serif;
 }
 
 body {
@@ -15,4 +15,11 @@ body {
     background-size: cover;
     background-blend-mode: darken;
     font-weight: 400;
+}
+
+.default-button {
+    width: 100%;
+    font-size: 2vh;
+    background-color: #B4B4B4;
+    border: 0;
 }

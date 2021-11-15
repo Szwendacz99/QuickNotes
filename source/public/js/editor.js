@@ -1,7 +1,7 @@
-function switchLeftPanel() {
-    if (document.getElementById("left-panel").style.display == "none") {
-        document.getElementById("left-panel").style.display = "flex";
+function switchDisplay(id, displayType) {
+    if (document.getElementById(id).style.display === "none") {
+        document.getElementById(id).style.display = displayType;
     } else {
-        document.getElementById("left-panel").style.display = "none";
+        document.getElementById(id).style.display = "none";
     }
 }
