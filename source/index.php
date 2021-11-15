@@ -1,6 +1,7 @@
 <?php
-$name = "Maciej";
-echo "<marquee scrollamount='2000' style='font-size:100px; color:red;'>$name</marquee>";
-phpinfo();
 
-include "login.html";
+$path = trim($_SERVER["REQUEST_URI"], "/");
+
+require_once "routing.php";
+
+Router::run($path);
