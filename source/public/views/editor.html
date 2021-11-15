@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
-    <link rel="stylesheet" type="text/css" href="../css/editor.css">
-    <link rel="stylesheet" type="text/css" href="../css/leftpanel.css">
+    <link rel="stylesheet" type="text/css" href="public/css/main.css">
+    <link rel="stylesheet" type="text/css" href="public/css/editor.css">
+    <link rel="stylesheet" type="text/css" href="public/css/leftpanel.css">
 
-    <script type="text/javascript" src="../js/editor.js"></script>
+    <script type="text/javascript" src="public/js/editor.js"></script>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +13,12 @@
     <title>QuickNotes editor</title>
 </head>
 <body>
+<ul>
+    <?php foreach($animals as $animal): ?>
+    <li><?= $animal ?></li>
+    <?php endforeach; ?>
+</ul>
+
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags">Choose tags ↓</button>
     
