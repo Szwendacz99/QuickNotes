@@ -11,8 +11,9 @@ body {
     color: white;
     margin: 0;
     font-size: 24px;
-    background: rgba(0, 0, 0, 0.55) url("../pictures/background.jpg");
+    /*background: rgba(0, 0, 0, 0.55) url("../pictures/background.jpg");*/
     background-size: cover;
+    background-color: white;
     background-blend-mode: darken;
     font-weight: 400;
 }
