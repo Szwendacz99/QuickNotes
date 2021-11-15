@@ -13,9 +13,8 @@
     <title>QuickNotes editor</title>
 </head>
 <body>
-    <div class="overlay user-menu">
-        test
-    </div>
+    <div id="overlay-bg" class="overlay-bg" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')"></div>
+    <div id="user-account-menu" class="user-account-menu"> gsegseg sgsgsegse gseg seg seg se<br><button class="default-button">test</button></div>
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
         <form id="choose-tags-form">
@@ -103,7 +102,7 @@
                 <button class="dashboard-bt share" ></button>
                 <button class="dashboard-bt change-view" ></button>
                 <button class="dashboard-bt delete" ></button>
-                <button class="user-menu-button">Maciej</button>
+                <button class="user-menu-button" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')">Maciej</button>
             </div>
         </div>
         <div class="edit-fields-container">
