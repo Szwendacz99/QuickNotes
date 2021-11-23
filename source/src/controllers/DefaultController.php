@@ -1,17 +1,24 @@
 <?php
 require_once 'AppController.php';
+require_once __DIR__ . '/../models/Note.php';
 
 class DefaultController extends AppController {
 
-    public function login()
+    public function login(): void
     {
-        // TODO read data from database etc...
         $this->render('login');
     }
 
-    public function editor()
+    public function editor(): void
     {
-        $animals = ["bird", "dog"];
-        $this->render('editor', ["animals" => $animals] );
+        // TODO read data from database etc...
+        $notes = [
+            new Note("title 1", "text"),
+            new Note("title 2", "text"),
+            new Note("title 3", "text"),
+            new Note("title 4", "text"),
+            new Note("title 5", "text"),
+        ];
+        $this->render('editor', ['notes' => $notes]);
     }
 }
