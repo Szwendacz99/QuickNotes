@@ -12,10 +12,17 @@
     <div class="logo">
         <h1>QuickNotes</h1>
     </div>
-    <form class="login-form">
-        <input class="login-input" type="text" placeholder="email">
-        <input class="login-input" type="password" placeholder="password">
-        <button class="login-button">LOGIN</button>
+    <form class="login-form" method="POST">
+        <div class="login-info">
+            <?php
+            if (isset($message)){
+                echo $message;
+            }
+            ?>
+        </div>
+        <input class="login-input" type="text" placeholder="email" name="email">
+        <input class="login-input" type="password" placeholder="password" name="password">
+        <button class="login-button" type="submit">LOGIN</button>
         <a href="" class="login-bottom-text">Create new account</a>
     </form>
     
