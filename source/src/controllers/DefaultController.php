@@ -4,13 +4,12 @@ require_once __DIR__ . '/../models/Note.php';
 
 class DefaultController extends AppController {
 
-    public function login(): void
-    {
-        $this->render('login');
-    }
-
     public function editor(): void
     {
+        if (! isset($_COOKIE['session_id'])){
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/login");
+        }
         // TODO read data from database etc...
         $notes = [
             new Note("title 1", "text"),

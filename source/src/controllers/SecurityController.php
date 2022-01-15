@@ -22,6 +22,8 @@ class SecurityController extends AppController
         }
         $url = "http://$_SERVER[HTTP_HOST]";
 
+        setcookie("session_id", "aaa", time()+60*60*24);
+        
         header("Location: {$url}/editor");
     }
 }

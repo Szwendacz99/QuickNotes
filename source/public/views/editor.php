@@ -14,7 +14,17 @@
 </head>
 <body>
     <div id="overlay-bg" class="overlay-bg" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')"></div>
-    <div id="user-account-menu" class="user-account-menu"> gsegseg sgsgsegse gseg seg seg se<br><button class="default-button">test</button></div>
+    <div id="user-account-menu" class="user-account-menu">
+        <h2>Your account details:</h2>
+        User ID: 00000000001: <br>
+        Nickname: Maciej<br>
+        Email: youremail@domain.dm<br>
+        <br>
+        <br>
+        <br>
+        <input class="default-input" placeholder="Start typing nickname">
+        <button class="default-button"> Change nickname </button>
+    </div>
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
         <form id="choose-tags-form">
