@@ -18,3 +18,12 @@ services:
       - type: bind
         source: ./source
         target: /app/
+
+  postgres:
+    image: postgres:14.1-bullseye
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: admin
