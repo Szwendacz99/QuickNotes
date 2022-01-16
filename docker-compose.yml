@@ -20,7 +20,7 @@ services:
         target: /app/
 
   postgres:
-    image: postgres:14.1-bullseye
+    image: postgres:13-bullseye
     restart: always
     ports:
       - "5432:5432"
