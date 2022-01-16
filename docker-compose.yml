@@ -1,8 +1,8 @@
 services:
   nginx:
     build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
+      context: docker/nginx
+      dockerfile: Dockerfile
     container_name: nginx
     ports:
       - "8080:80"
@@ -20,7 +20,10 @@ services:
         target: /app/
 
   postgres:
-    image: postgres:13-bullseye
+    build:
+      context: docker/postgres
+      dockerfile: Dockerfile
+    container_name: postgres
     restart: always
     ports:
       - "5432:5432"
