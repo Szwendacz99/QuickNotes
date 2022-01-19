@@ -4,9 +4,17 @@ require_once __DIR__ . '/../models/Note.php';
 
 class DefaultController extends AppController {
 
+    private UserRepository $userRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->userRepository = new UserRepository();
+    }
+
     public function editor(): void
     {
-        if (! isset($_COOKIE['session_id'])){
+        if (! isset($_COOKIE['session_id']) || $this->userRepository->getUserByUUID() ){
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/login");
         }
