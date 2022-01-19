@@ -159,7 +159,6 @@ INSERT INTO quicknotes_schema.note VALUES ('6ac27a42-7954-11ec-90d6-0242ac120003
 -- Data for Name: note_public_share; Type: TABLE DATA; Schema: quicknotes_schema; Owner: admin
 --
 
-INSERT INTO quicknotes_schema.note_public_share VALUES ('03ff9028-7928-11ec-90d6-0242ac120003', 'd4561796-7924-11ec-90d6-0242ac120003');
 
 
 --

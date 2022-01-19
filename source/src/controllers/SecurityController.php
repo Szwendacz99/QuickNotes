@@ -26,4 +26,13 @@ class SecurityController extends AppController
         
         header("Location: {$url}/editor");
     }
+
+    public function register() {
+
+        if (!$this->isPost()) {
+            $this->render('register');
+            return;
+        }
+
+    }
 }
