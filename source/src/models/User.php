@@ -2,17 +2,35 @@
 
 class User
 {
+    private string $uuid;
     private string $username;
     private string $email;
     private string $password;
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
 
     /**
      * @param string $username
      * @param string $email
      * @param string $password
      */
-    public function __construct(string $username, string $email, string $password)
+    public function __construct(string $user_id, string $username, string $email, string $password)
     {
+        $this->uuid = $user_id;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;

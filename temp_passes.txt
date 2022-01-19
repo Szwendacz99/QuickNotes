@@ -1,7 +1,7 @@
-user 1
+email1@domain.com
 example
 
-user 2
+email2@domain.com
 example2
 
 

@@ -1,7 +1,7 @@
 <?php
 
-include_once "../src/controllers/DefaultController.php";
-require_once __DIR__."../src/controllers/SecurityController.php";
+include_once __DIR__."./../src/controllers/DefaultController.php";
+require_once __DIR__."./../src/controllers/SecurityController.php";
 
 class Router {
 
