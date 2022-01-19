@@ -22,15 +22,12 @@ class UserRepository extends Repository
 
     public function startSession(string $uuid): string {
         $session_id = Utils::uuid();
-        $timestamp = strtotime('+7 days', time());
-        $expiration = date('Y-m-d H:i:s', $timestamp);
 
         $stmt = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.session (
-                     session_id, user_id, expiration, last_active) VALUES
-                     (:session_id, :user_id, :expiration, NOW())');
+                     session_id, user_id, last_active) VALUES
+                     (:session_id, :user_id, NOW())');
         $stmt->bindParam(':session_id', $session_id, PDO::PARAM_STR);
         $stmt->bindParam(':user_id', $uuid, PDO::PARAM_STR);
-        $stmt->bindParam(':expiration', $expiration, PDO::PARAM_STR);
         $stmt->execute();
 
         return $session_id;
