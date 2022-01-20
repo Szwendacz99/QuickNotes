@@ -20,10 +20,12 @@
             }
             ?>
         </div>
+        <input class="login-input" type="text" placeholder="username" name="username">
         <input class="login-input" type="text" placeholder="email" name="email">
         <input class="login-input" type="password" placeholder="password" name="password">
-        <button class="login-button" type="submit">LOGIN</button>
-        <a href="/register" class="login-bottom-text">Create new account</a>
+        <input class="login-input" type="password" placeholder="confirm password" name="password_confirm">
+        <button class="login-button" type="submit">REGISTER</button>
+        <a href="/login" class="login-bottom-text">I have an account</a>
     </form>
     
 </body>

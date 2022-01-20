@@ -12,12 +12,16 @@ services:
       - php
 
   php:
-    image: php:8.0.12-fpm-alpine3.13
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
     container_name: php
+    links:
+      - postgres
     volumes:
       - type: bind
         source: ./source
-        target: /app/
+        target: /app
 
   postgres:
     build:

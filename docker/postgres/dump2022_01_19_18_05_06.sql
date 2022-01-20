@@ -48,23 +48,6 @@ CREATE SCHEMA quicknotes_schema;
 
 ALTER SCHEMA quicknotes_schema OWNER TO admin;
 
---
--- Name: clean_sessions(); Type: FUNCTION; Schema: public; Owner: admin
---
-
-CREATE FUNCTION public.clean_sessions() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    DELETE FROM quicknotes_schema.session WHERE (last_active + '7 DAYS'::interval) < NOW();
-
-    RETURN NULL;
-END;
-$$;
-
-
-ALTER FUNCTION public.clean_sessions() OWNER TO admin;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -198,7 +181,6 @@ INSERT INTO quicknotes_schema.note_tag VALUES ('6ab27a42-7924-11ec-90d6-0242ac12
 -- Data for Name: session; Type: TABLE DATA; Schema: quicknotes_schema; Owner: admin
 --
 
-INSERT INTO quicknotes_schema.session VALUES ('11d2a0b1-8f40-406d-b8df-2388b1ec1d80', 'd243c592-7920-11ec-90d6-0242ac120003', '2022-01-19 17:05:24.976235');
 
 
 --
@@ -320,13 +302,6 @@ CREATE UNIQUE INDEX user_user_id_uindex ON quicknotes_schema."user" USING btree 
 --
 
 CREATE UNIQUE INDEX user_username_uindex ON quicknotes_schema."user" USING btree (username);
-
-
---
--- Name: session clean_sessions_trigger; Type: TRIGGER; Schema: quicknotes_schema; Owner: admin
---
-
-CREATE TRIGGER clean_sessions_trigger BEFORE INSERT ON quicknotes_schema.session FOR EACH STATEMENT EXECUTE FUNCTION public.clean_sessions();
 
 
 --
