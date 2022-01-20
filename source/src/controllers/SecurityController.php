@@ -31,7 +31,12 @@ class SecurityController extends AppController
             return;
         }
 
-        $session_id = $this->userRepository->startSession($user->getUuid());
+        if (!isset($_COOKIE['session_id']) || ! $this->userRepository->validateSession($_COOKIE['session_id'])) {
+            $session_id = $this->userRepository->startSession($user->getUuid());
+        }
+        else {
+            $session_id = $this->userRepository->refreshSession($user->getUuid());
+        }
 
         $url = "http://$_SERVER[HTTP_HOST]";
 
