@@ -9,5 +9,6 @@ Router::get('', 'DefaultController');
 Router::get('editor', 'DefaultController');
 Router::post('login', 'SecurityController');
 Router::post('register', 'SecurityController');
+Router::post('logout', 'SecurityController');
 
 Router::run($path);

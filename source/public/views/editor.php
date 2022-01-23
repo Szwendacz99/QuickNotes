@@ -16,23 +16,24 @@
     <div id="overlay-bg" class="overlay-bg" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')"></div>
     <div id="user-account-menu" class="user-account-menu">
         <h2>Your account details:</h2>
-        User ID: 00000000001: <br>
-        Nickname: Maciej<br>
-        Email: youremail@domain.dm<br>
+        User ID:<?= $user->getUUID() ?><br> <br>
+        Nickname: <?= $user->getUsername() ?><br>
+        Email: <?= $user->getEmail() ?><br><br>
         <br>
         <br>
         <br>
         <input class="default-input" placeholder="Start typing nickname">
         <button class="default-button"> Change nickname </button>
+        <br>
+        <a href="/logout">Logout</a>
     </div>
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
         <form id="choose-tags-form">
             <button class="default-button">Save</button>
-            <label><input type="checkbox" value="tag 1">tag 1</label>
-            <label><input type="checkbox" value="tag 2" checked="checked">checked tag</label>
-            <label><input type="checkbox" value="some long named tag (why so long?)">some long named tag (why so long?)</label>
-            <label><input type="checkbox" value="tag 4 which ends here">tag 4 which ends here</label>
+            <?php foreach ($user_tags as $tag): ?>
+                <label><input type="checkbox" checked="true" value="<?= $tag->getName() ?>"><?= $tag->getName() ?></label>
+            <?php endforeach; ?>
         </form>
     
         <div class="left-panel-field-container">
@@ -47,25 +48,24 @@
             <div class="left-panel-field-header">
                 Shared by You:
             </div>
-            <div class="left-panel-field-subheader"> For User1:</div>
-            <button class="left-panel-note-item">note one</button>
-            <div class="left-panel-field-subheader"> For User2:</div>
-            <button class="left-panel-note-item">note with very long
-                name that need to
-                expand button
-                vertically</button>
+            <?php foreach (array_keys($shared_notes) as $other_user): ?>
+                <div class="left-panel-field-subheader">For <?=$other_user?></div>
+                <?php foreach ($shared_notes[$other_user] as $note): ?>
+                    <button class="left-panel-note-item"><?= $note->getTitle() ?></button>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
         </div>
         <div class="left-panel-field-container">
             <div class="left-panel-field-header">
                 Shared by others:
             </div>
-            <div class="left-panel-field-subheader"> From User1:</div>
-            <button class="left-panel-note-item">note for u</button>
-            <div class="left-panel-field-header">
-                Shared by others:
-            </div>
+            <?php foreach (array_keys($shared_notes_from_others) as $other_user): ?>
+                <div class="left-panel-field-subheader">From <?=$other_user?></div>
+                <?php foreach ($shared_notes_from_others[$other_user] as $note): ?>
+                    <button class="left-panel-note-item"><?= $note->getTitle() ?></button>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
 
-    
         </div>
     </div>
 
@@ -80,7 +80,7 @@
                 <button class="dashboard-bt share" ></button>
                 <button class="dashboard-bt change-view" ></button>
                 <button class="dashboard-bt delete" ></button>
-                <button class="user-menu-button" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')">Maciej</button>
+                <button class="user-menu-button" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')"><?= $user->getUsername() ?></button>
             </div>
         </div>
         <div class="edit-fields-container">

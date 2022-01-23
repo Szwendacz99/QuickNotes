@@ -45,6 +45,14 @@ class SecurityController extends AppController
         header("Location: {$url}/editor");
     }
 
+    public function logout(): void {
+        if (isset($_COOKIE['session_id'])) {
+            setcookie("session_id", "", time()-60*60*24*7);
+        }
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/login");
+    }
+
     public function register() {
 
         if (!$this->isPost()) {

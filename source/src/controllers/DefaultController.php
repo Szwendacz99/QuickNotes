@@ -1,17 +1,20 @@
 <?php
 require_once 'AppController.php';
+require_once __DIR__ . './../repository/NoteRepository.php';
 require_once __DIR__ . '/../models/Note.php';
 require_once __DIR__.'./../models/User.php';
 
 class DefaultController extends AppController {
 
     private UserRepository $userRepository;
-    private User $user;
+    private NoteRepository $noteRepository;
+    private ?User $user;
 
     public function __construct()
     {
         parent::__construct();
         $this->userRepository = new UserRepository();
+        $this->noteRepository = new NoteRepository();
     }
 
     public function editor(): void
@@ -25,15 +28,17 @@ class DefaultController extends AppController {
             $this->unauthorizedExit();
         }
         
-        // TODO read data from database etc...
-        $notes = [
-            new Note("title 1", "text"),
-            new Note("title 2", "text"),
-            new Note("title 3", "text"),
-            new Note("title 4", "text"),
-            new Note("title 5", "text"),
-        ];
-        $this->render('editor', ['notes' => $notes]);
+        $notes = $this->noteRepository->getUserNotes($this->user->getUuid());
+        $shared_notes = $this->noteRepository->getNotesSharedByUser($this->user->getUuid());
+        $shared_notes_from_others = $this->noteRepository->getNotesSharedForUser($this->user->getUuid());
+        $user_tags = $this->noteRepository->getUserTags($this->user->getUuid());
+
+        $this->render('editor',
+            [   'notes' => $notes,
+                'user' => $this->user,
+                'shared_notes' => $shared_notes,
+                'shared_notes_from_others' => $shared_notes_from_others,
+                'user_tags' => $user_tags]);
     }
 
 
