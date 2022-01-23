@@ -14,10 +14,66 @@ class SecurityController extends AppController
         $this->userRepository = new UserRepository();
     }
 
-    public function login() {
+    public function register(): void {
+        if (!$this->isPost()) {
+            $this->render('register');
+            return;
+        }
+
+        if (! (isset($_POST['email']) &&
+            isset($_POST['password']) &&
+            isset($_POST['username']) &&
+            isset($_POST['password_confirm']))) {
+            $this->render('register', ['message' => "Missing needed data for new account!"]);
+            return;
+        }
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $password_confirm = $_POST['password_confirm'];
+        $username = $_POST['username'];
+
+        if(! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->render('register', ['message' => "Bad email!"]);
+            return;
+        }
+
+        if($password !== $password_confirm || strlen($password) < 8) {
+            $this->render('register', ['message' => "Password shorter than 8 or not matching!"]);
+            return;
+        }
+
+        if (strlen($username) < 3) {
+            $this->render('register', ['message' => "Username too short (<3)!"]);
+            return;
+        }
+
+        $uuid = $this->userRepository->addUser($username, $password, $email);
+
+        if ($uuid === null) {
+            $this->render('register', ['message' => "Email already taken!"]);
+            return;
+        }
+
+        $sessionUUID = $this->userRepository->startSession($uuid);
+
+        $url = "http://$_SERVER[HTTP_HOST]";
+
+        setcookie("session_id", $sessionUUID, time()+60*60*24*7);
+
+        header("Location: {$url}/editor");
+
+    }
+
+    public function login(): void {
 
         if (!$this->isPost()) {
             $this->render('login');
+            return;
+        }
+
+        if (! (isset($_POST['email']) &&
+            isset($_POST['password']) )){
+            $this->render('login', ['message' => "Bad email or password!"]);
             return;
         }
 
@@ -53,12 +109,4 @@ class SecurityController extends AppController
         header("Location: {$url}/login");
     }
 
-    public function register() {
-
-        if (!$this->isPost()) {
-            $this->render('register');
-            return;
-        }
-
-    }
 }
