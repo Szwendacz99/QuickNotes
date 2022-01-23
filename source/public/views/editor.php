@@ -24,13 +24,15 @@
         <br>
         <input class="default-input" placeholder="Start typing nickname">
         <button class="default-button"> Change nickname </button>
+        <br>
+        <a href="/logout">Logout</a>
     </div>
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
         <form id="choose-tags-form">
             <button class="default-button">Save</button>
             <?php foreach ($user_tags as $tag): ?>
-                <label><input type="checkbox" value="<?= $tag->getName() ?>"><?= $tag->getName() ?></label>
+                <label><input type="checkbox" checked="true" value="<?= $tag->getName() ?>"><?= $tag->getName() ?></label>
             <?php endforeach; ?>
         </form>
     
