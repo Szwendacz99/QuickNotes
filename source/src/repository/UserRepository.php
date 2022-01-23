@@ -20,6 +20,27 @@ class UserRepository extends Repository
         return new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
     }
 
+    public function addUser(string $username, string $password, string $email): ?string {
+
+        if ($this->getUserByEmail($email) !== null) {
+            return null;
+        }
+
+        $uuid = Utils::uuid();
+        $password = password_hash($password, PASSWORD_BCRYPT);
+
+        $query = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.user 
+            (user_id, username, password_hash, email) VALUES
+            (:uuid, :username, :password, :email)');
+        $query->bindParam(':uuid', $uuid, PDO::PARAM_STR);
+        $query->bindParam(':username', $username, PDO::PARAM_STR);
+        $query->bindParam(':password', $password, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->execute();
+
+        return $uuid;
+    }
+
     public function startSession(string $userUUID): string {
 
         $query = $this->database->connect()->prepare('DELETE FROM quicknotes_schema.session 

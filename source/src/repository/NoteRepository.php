@@ -31,10 +31,12 @@ class NoteRepository extends Repository
 
     public function getNotesSharedByUser($userUUID): Array {
         $notes = [];
-        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note n INNER JOIN
-              quicknotes_schema.session s on n.user_id = s.user_id INNER JOIN
-              quicknotes_schema.note_share ns on n.note_id = ns.note_id INNER JOIN
-              quicknotes_schema.user u on ns.user_id = u.user_id WHERE ns.user_id != :uuid');
+        $query = $this->database->connect()->prepare('SELECT * FROM 
+              (SELECT ns.user_id, n.title, n.note_id FROM quicknotes_schema.note n INNER JOIN
+                                              quicknotes_schema.session s on n.user_id = s.user_id INNER JOIN
+                                              quicknotes_schema.note_share ns on n.note_id = ns.note_id
+               WHERE s.user_id =  :uuid) shares INNER JOIN
+              quicknotes_schema.user u on shares.user_id = u.user_id');
         $query->bindParam(':uuid', $userUUID, PDO::PARAM_STR);
         $query->execute();
 
