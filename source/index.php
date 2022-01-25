@@ -10,5 +10,7 @@ Router::get('editor', 'DefaultController');
 Router::post('login', 'SecurityController');
 Router::post('register', 'SecurityController');
 Router::post('logout', 'SecurityController');
+Router::post('note', 'NoteController');
+Router::post('save', 'NoteController');
 
 Router::run($path);

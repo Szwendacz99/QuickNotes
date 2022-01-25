@@ -5,7 +5,8 @@
     <link rel="stylesheet" type="text/css" href="public/css/editor.css">
     <link rel="stylesheet" type="text/css" href="public/css/leftpanel.css">
 
-    <script type="text/javascript" src="public/js/editor.js"></script>
+    <script type="text/javascript" src="public/js/editor.js" defer></script>
+    <script type="text/javascript" src="public/js/openNote.js" defer></script>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,44 +26,43 @@
         <input class="default-input" placeholder="Start typing nickname">
         <button class="default-button"> Change nickname </button>
         <br>
-        <a href="/logout">Logout</a>
+        <button onclick="location.href = '/logout';" class="default-input">Logout</button>
     </div>
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
-        <form id="choose-tags-form">
-            <button class="default-button">Save</button>
+        <div id="choose-tags-form">
             <?php foreach ($user_tags as $tag): ?>
-                <label><input type="checkbox" checked="true" value="<?= $tag->getName() ?>"><?= $tag->getName() ?></label>
+                <label><input type="checkbox" checked="true" data-tag-uuid="<?= $tag->getUuid() ?>" value="<?= $tag->getName() ?>"><?= $tag->getName() ?></label>
             <?php endforeach; ?>
-        </form>
+        </div>
     
-        <div class="left-panel-field-container">
+        <div id="your-notes-list" class="left-panel-field-container">
             <div class="left-panel-field-header">
                 Your notes:
             </div>
             <?php foreach ($notes as $note): ?>
-                <button class="left-panel-note-item"><?= $note->getTitle() ?></button>
+                <button class="left-panel-note-item" data-note-id="<?= $note->getUuid() ?>"><?= $note->getTitle() ?></button>
             <?php endforeach; ?>
         </div>
-        <div class="left-panel-field-container">
+        <div id="your-shared-notes-list"  class="left-panel-field-container">
             <div class="left-panel-field-header">
                 Shared by You:
             </div>
             <?php foreach (array_keys($shared_notes) as $other_user): ?>
                 <div class="left-panel-field-subheader">For <?=$other_user?></div>
                 <?php foreach ($shared_notes[$other_user] as $note): ?>
-                    <button class="left-panel-note-item"><?= $note->getTitle() ?></button>
+                    <button class="left-panel-note-item" data-note-id="<?= $note->getNoteUUID() ?>"><?= $note->getTitle() ?></button>
                 <?php endforeach; ?>
             <?php endforeach; ?>
         </div>
-        <div class="left-panel-field-container">
+        <div id="others-shared-notes-list" class="left-panel-field-container">
             <div class="left-panel-field-header">
                 Shared by others:
             </div>
             <?php foreach (array_keys($shared_notes_from_others) as $other_user): ?>
                 <div class="left-panel-field-subheader">From <?=$other_user?></div>
                 <?php foreach ($shared_notes_from_others[$other_user] as $note): ?>
-                    <button class="left-panel-note-item"><?= $note->getTitle() ?></button>
+                    <button class="left-panel-note-item" data-note-id="<?= $note->getNoteUUID() ?>"><?= $note->getTitle() ?></button>
                 <?php endforeach; ?>
             <?php endforeach; ?>
 
@@ -84,11 +84,11 @@
             </div>
         </div>
         <div class="edit-fields-container">
-            <input class="editing-panel editing-panel-title" value="note one" type="text" name="title">
+            <input class="editing-panel editing-panel-title" data-note-id="" id="note-title" value="" type="text" name="title">
 
             <div class="edit-textareas-container">
-                <textarea class="editing-panel" name="note_input">test</textarea>
-                <textarea class="editing-panel" disabled="disabled" name="display">test</textarea>
+                <textarea class="editing-panel" id="note-text" name="note_input"></textarea>
+                <textarea class="editing-panel" id="note-display" disabled="disabled" name="display"></textarea>
             </div>
         </div>
     </div>

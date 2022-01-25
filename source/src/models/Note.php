@@ -1,6 +1,8 @@
 <?php
 
 class Note{
+
+    private string $uuid;
     private string $title;
     private string $text;
     private DateTime $timeCreated;
@@ -10,11 +12,29 @@ class Note{
      * @param string $title
      * @param string $text
      */
-    public function __construct(string $title, string $text)
+    public function __construct(string $uuid, string $title, string $text)
     {
+        $this->uuid = $uuid;
         $this->title = $title;
         $this->text = $text;
     }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
 
     /**
      * @return string
