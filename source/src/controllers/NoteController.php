@@ -54,7 +54,7 @@ class NoteController extends AppController {
             $noteTagsObj = $this->noteRepository->getNoteTags($note->getUuid());
             $noteTags = [];
             foreach ($noteTagsObj as $tag) {
-                $tags[] = ['tag_name' => $tag->getName(), 'tag_id' => $tag->getUuid()];
+                $noteTags[] = ['tag_name' => $tag->getName(), 'tag_id' => $tag->getUuid()];
             }
 
             $allTags = $this->noteRepository->getUserTags($this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid());
@@ -78,6 +78,24 @@ class NoteController extends AppController {
                 'last_edit' => $note->getTimeLastEdit()->format(DATE_FORMAT),
                 'tags' => $noteTags,
                 'other_tags' => $otherTags]);
+        }
+    }
+
+    public function tagnote() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $this->noteRepository->addTagToNote($content->tag_id, $content->note_id);
         }
     }
 

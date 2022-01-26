@@ -42,45 +42,50 @@ function noteInfoOverlay() {
         noteCreatedItem.innerHTML = result['creation_datetime'];
         noteLastEditItem.innerHTML = result['last_edit'];
         noteTagsItem.innerHTML = "";
-        result['tags'].forEach(tag => {
-            const template = document.querySelector("#template-note-info-tag-item");
+        result['tags'].forEach(tag => addTagItem(noteTagsItem, true, tag))
 
-            const clone = template.content.cloneNode(true);
-            const label = clone.querySelector('label');
-            const checkbox = label.querySelector('input');
-
-            checkbox.setAttribute('checked', 'true');
-
-            checkbox.setAttribute('data-tag-uuid', tag['tag_id']);
-
-            label.innerHTML += tag['tag_name'];
-
-            // checkbox.addEventListener('click', switchTag)
-            noteTagsItem.appendChild(clone);
-            noteTagsItem.insertAdjacentHTML('beforeend', "<br>");
-        })
-
-        result['other_tags'].forEach(tag => {
-            const template = document.querySelector("#template-note-info-tag-item");
-
-            const clone = template.content.cloneNode(true);
-            const label = clone.querySelector('label');
-            const checkbox = clone.querySelector('input');
-
-            checkbox.removeAttribute('checked');
-
-            checkbox.setAttribute('data-tag-uuid', tag['tag_id']);
-
-            label.innerHTML += tag['tag_name'];
-
-            // checkbox.addEventListener('click', switchTag)
-            noteTagsItem.appendChild(clone);
-            noteTagsItem.insertAdjacentHTML('beforeend', "<br>");
-        })
+        result['other_tags'].forEach(tag => addTagItem(noteTagsItem, false, tag))
 
         switchOverlay('overlay-bg-note-menu', 'note-menu', 'flex')
 
     })
+}
+
+function addTagItem(container, checked, tag) {
+    const template = document.querySelector("#template-note-info-tag-item");
+
+    const clone = template.content.cloneNode(true);
+    const label = clone.querySelector('label');
+    const checkbox = clone.querySelector('input');
+
+    if (!checked) {
+        checkbox.removeAttribute('checked');
+    } else {
+        checkbox.setAttribute('checked', 'true');
+    }
+
+    checkbox.setAttribute('onChange', 'addTagToNote(this)')
+    checkbox.setAttribute('data-tag-uuid', tag['tag_id']);
+
+    label.innerHTML += tag['tag_name'];
+
+    // checkbox.addEventListener('click', switchTag)
+    container.appendChild(clone);
+    container.insertAdjacentHTML('beforeend', "<br>");
+}
+
+function addTagToNote(obj) {
+    const note_id = noteTitle.getAttribute('data-note-id');
+    console.log("test");
+    if (obj.checked) {
+        fetch("/tagnote", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'note_id': note_id, 'tag_id': obj.getAttribute('data-tag-uuid')})
+        })
+    }
 }
 
 

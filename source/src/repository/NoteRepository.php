@@ -70,7 +70,7 @@ class NoteRepository extends Repository
         return $note;
     }
 
-    public function getNoteTags($noteUUID) {
+    public function getNoteTags($noteUUID): array {
         $tags = [];
 
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note n INNER JOIN
@@ -89,8 +89,15 @@ class NoteRepository extends Repository
         foreach ($result as $tag) {
             $tags[] = new Tag($tag['tag_id'], $tag['tag_name']);
         }
-
         return $tags;
+    }
+
+    public function addTagToNote($tagUUID, $noteUUID) {
+        $query = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.note_tag 
+                                                    (note_id, tag_id) VALUES (:note_id, :tag_id)');
+        $query->bindParam(':note_id', $noteUUID, PDO::PARAM_STR);
+        $query->bindParam(':tag_id', $tagUUID, PDO::PARAM_STR);
+        $query->execute();
     }
 
     public function getNotesSharedForUser($userUUID): Array {
