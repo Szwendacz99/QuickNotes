@@ -13,5 +13,6 @@ Router::post('logout', 'SecurityController');
 Router::post('note', 'NoteController');
 Router::post('save', 'NoteController');
 router::post('new', 'NoteController');
+router::post('delete', 'NoteController');
 
 Router::run($path);

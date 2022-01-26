@@ -20,8 +20,7 @@ class NoteController extends AppController {
     public function note() {
         if (!$this->userRepository->authorize())
         {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/login");
+            return;
         }
 
         $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
@@ -40,8 +39,7 @@ class NoteController extends AppController {
     public function save() {
         if (!$this->userRepository->authorize())
         {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/login");
+            return;
         }
 
         $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
@@ -55,11 +53,11 @@ class NoteController extends AppController {
             $this->noteRepository->saveNote($content->note_id, $content->title, $content->text);
         }
     }
+
     public function new() {
         if (!$this->userRepository->authorize())
         {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/login");
+            return;
         }
 
         $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
@@ -74,6 +72,24 @@ class NoteController extends AppController {
 
             $note_id = $this->noteRepository->newNote($userUUID, $content->title, $content->text);
             echo json_encode(['note_id' => $note_id]);
+        }
+    }
+
+    public function delete() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $this->noteRepository->deleteNote($content->note_id);
         }
     }
 

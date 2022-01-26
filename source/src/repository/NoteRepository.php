@@ -97,7 +97,7 @@ class NoteRepository extends Repository
     }
 
     public function newNote($userUUID, $title, $text): string {
-       $note_id = Utils::uuid();
+        $note_id = Utils::uuid();
 
         $query = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.note
                                                             (note_id, title, text, user_id) VALUES 
@@ -109,6 +109,13 @@ class NoteRepository extends Repository
         $query->execute();
 
         return $note_id;
+    }
+
+    public function deleteNote($noteUUID) {
+        $query = $this->database->connect()->prepare('DELETE FROM quicknotes_schema.note
+                                                            WHERE note_id = :note_id');
+        $query->bindParam(':note_id', $noteUUID, PDO::PARAM_STR);
+        $query->execute();
     }
 
     public function getUserTags($userUUID): Array {
