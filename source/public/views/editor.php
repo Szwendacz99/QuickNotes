@@ -26,7 +26,7 @@
         <input class="default-input" placeholder="Start typing nickname">
         <button class="default-button"> Change nickname </button>
         <br>
-        <button onclick="location.href = '/logout';" class="default-input">Logout</button>
+        <button onclick="location.href = '/logout';" class="default-button">Logout</button>
     </div>
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
@@ -95,4 +95,8 @@
     
     
 </body>
+<template id="template-note-item">
+    <button class="left-panel-note-item" data-note-id=""></button>
+</template>
+
 </html>

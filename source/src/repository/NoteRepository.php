@@ -96,6 +96,21 @@ class NoteRepository extends Repository
         $query->execute();
     }
 
+    public function newNote($userUUID, $title, $text): string {
+       $note_id = Utils::uuid();
+
+        $query = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.note
+                                                            (note_id, title, text, user_id) VALUES 
+                                                            (:note_id, :title, :text, :user_id)');
+        $query->bindParam(':user_id', $userUUID, PDO::PARAM_STR);
+        $query->bindParam(':title', $title, PDO::PARAM_STR);
+        $query->bindParam(':text', $text, PDO::PARAM_STR);
+        $query->bindParam(':note_id', $note_id, PDO::PARAM_STR);
+        $query->execute();
+
+        return $note_id;
+    }
+
     public function getUserTags($userUUID): Array {
         $tags = [];
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.tag n WHERE user_id = :uuid');

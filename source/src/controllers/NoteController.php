@@ -51,9 +51,29 @@ class NoteController extends AppController {
 
             header('Content-type: application/json');
             http_response_code(200);
-            print_r($content);
+
             $this->noteRepository->saveNote($content->note_id, $content->title, $content->text);
-//            echo json_encode(['note_id' => $note->getUuid(), 'title' => $note->getTitle(), 'text' => $note->getText()]);
+        }
+    }
+    public function new() {
+        if (!$this->userRepository->authorize())
+        {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/login");
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        $userUUID = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid();
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $note_id = $this->noteRepository->newNote($userUUID, $content->title, $content->text);
+            echo json_encode(['note_id' => $note_id]);
         }
     }
 

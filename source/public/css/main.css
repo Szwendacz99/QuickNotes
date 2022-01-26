@@ -24,6 +24,14 @@ body {
     margin: 0.5vh;
 }
 
+.default-button:hover {
+    background-color: #A4A4A4;
+}
+
+.default-button:active {
+    background-color: #646464;
+}
+
 .default-input {
     border-radius: 0.5vh;
     background-color: #C4C4C4;

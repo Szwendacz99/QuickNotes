@@ -20,6 +20,6 @@ function openNote() {
         noteTitle.setAttribute('data-note-id', result['note_id'])
     })
 }
-console.log(noteButtons);
+
 noteButtons.forEach(button => button.addEventListener('click', openNote));
 
