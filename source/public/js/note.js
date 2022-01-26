@@ -70,6 +70,7 @@ function newNote() {
 }
 
 function deleteNote() {
+
     const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
 
     fetch("/delete", {

@@ -1,18 +1,21 @@
 function switchDisplay(id, displayType) {
-    if (document.getElementById(id).style.display === "none") {
-        document.getElementById(id).style.display = displayType;
+    const elem = document.getElementById(id);
+    if (elem.style.display === "none") {
+        elem.style.display = displayType;
     } else {
-        document.getElementById(id).style.display = "none";
+        elem.style.display = "none";
     }
 }
 
 function switchOverlay(overlayBgId, overlayId, displayType) {
-    if (document.getElementById(overlayId).style.display === "none") {
-        document.getElementById(overlayId).style.display = displayType;
-        document.getElementById(overlayBgId).style.display = displayType;
+    const overlay = document.getElementById(overlayId);
+    const overlayBg = document.getElementById(overlayBgId);
+    if (overlay.style.display === "none") {
+        overlay.style.display = displayType;
+        overlayBg.style.display = displayType;
     } else {
-        document.getElementById(overlayId).style.display = "none";
-        document.getElementById(overlayBgId).style.display = "none";
+        overlay.style.display = "none";
+        overlayBg.style.display = "none";
     }
 }
 

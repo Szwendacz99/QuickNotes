@@ -7,6 +7,7 @@
 
     <script type="text/javascript" src="public/js/editor.js" defer></script>
     <script type="text/javascript" src="public/js/note.js" defer></script>
+    <script type="text/javascript" src="public/js/account.js" defer></script>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,8 +24,9 @@
         <br>
         <br>
         <br>
-        <input class="default-input" placeholder="Start typing nickname">
-        <button class="default-button"> Change nickname </button>
+        <div id="change-nickname-message"></div>
+        <input class="default-input" id="new-nickname" placeholder="Start typing nickname">
+        <button class="default-button" id="change-nickname-button"> Change nickname </button>
         <br>
         <button onclick="location.href = '/logout';" class="default-button">Logout</button>
     </div>

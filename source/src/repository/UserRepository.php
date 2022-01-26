@@ -20,6 +20,21 @@ class UserRepository extends Repository
         return new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
     }
 
+    public function changeNickname($userUUID, $nickname): string {
+
+        if ($this->getUserByNickname($nickname) !== null) {
+            return "Nickname already taken!";
+        }
+
+        $query = $this->database->connect()->prepare('UPDATE quicknotes_schema.user SET username = :username WHERE
+                                                                user_id = :user_id');
+        $query->bindParam(':user_id', $userUUID, PDO::PARAM_STR);
+        $query->bindParam(':username', $nickname, PDO::PARAM_STR);
+        $query->execute();
+
+        return "Nickname changed successfully!";
+    }
+
     public function addUser(string $username, string $password, string $email): ?string {
 
         if ($this->getUserByEmail($email) !== null) {
@@ -126,6 +141,20 @@ class UserRepository extends Repository
     public function getUserByEmail(string $email): ?User {
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.user WHERE email = :email');
         $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->execute();
+
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($user == false) {
+            return null;
+        }
+
+        return new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
+    }
+
+    public function getUserByNickname(string $nickname): ?User {
+        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.user WHERE username = :username');
+        $query->bindParam(':username', $nickname, PDO::PARAM_STR);
         $query->execute();
 
         $user = $query->fetch(PDO::FETCH_ASSOC);

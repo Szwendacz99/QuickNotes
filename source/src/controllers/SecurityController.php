@@ -64,6 +64,32 @@ class SecurityController extends AppController
 
     }
 
+    public function nickname() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            if (strlen($content->nickname) < 3) {
+                echo json_encode(['result' => "Nickname too short!"]);
+                return;
+            }
+
+            $user = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id']);
+
+            echo json_encode(['result' => $this->userRepository->changeNickname($user->getUuid(),
+                $content->nickname)]);
+        }
+    }
+
     public function login(): void {
 
         if (!$this->isPost()) {

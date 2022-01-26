@@ -14,5 +14,6 @@ Router::post('note', 'NoteController');
 Router::post('save', 'NoteController');
 router::post('new', 'NoteController');
 router::post('delete', 'NoteController');
+router::post('nickname', 'SecurityController');
 
 Router::run($path);
