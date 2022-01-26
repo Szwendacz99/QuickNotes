@@ -36,6 +36,51 @@ class NoteController extends AppController {
         }
     }
 
+    public function noteinfo() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $note = $this->noteRepository->getNoteInfo($content->note_id);
+            $noteTagsObj = $this->noteRepository->getNoteTags($note->getUuid());
+            $noteTags = [];
+            foreach ($noteTagsObj as $tag) {
+                $tags[] = ['tag_name' => $tag->getName(), 'tag_id' => $tag->getUuid()];
+            }
+
+            $allTags = $this->noteRepository->getUserTags($this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid());
+
+            $otherTags = [];
+            foreach ($allTags as $tag) {
+                $isNoteTag = false;
+                foreach ($noteTagsObj as $noteTag) {
+                    if ($tag->getUuid() === $noteTag->getUuid()){
+                        $isNoteTag = true;
+                        break;
+                    }
+                }
+                if (!$isNoteTag) {
+                    $otherTags[] = ['tag_name' => $tag->getName(), 'tag_id' => $tag->getUuid()];
+                }
+            }
+
+            echo json_encode(['title' => $note->getTitle(),
+                'creation_datetime' => $note->getTimeCreated()->format(DATE_FORMAT),
+                'last_edit' => $note->getTimeLastEdit()->format(DATE_FORMAT),
+                'tags' => $noteTags,
+                'other_tags' => $otherTags]);
+        }
+    }
+
     public function save() {
         if (!$this->userRepository->authorize())
         {

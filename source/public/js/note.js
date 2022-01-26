@@ -21,11 +21,73 @@ function openNote() {
     })
 }
 
+function noteInfoOverlay() {
+    const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
+    const noteTitleItem = document.querySelector("#note-info-title")
+    const noteCreatedItem = document.querySelector("#note-info-created")
+    const noteLastEditItem = document.querySelector("#note-info-edited")
+    const noteTagsItem = document.querySelector('#note-info-tags')
+
+    fetch("/noteinfo", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'note_id': note_id})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (result) {
+
+        noteTitleItem.innerHTML = result['title'];
+        noteCreatedItem.innerHTML = result['creation_datetime'];
+        noteLastEditItem.innerHTML = result['last_edit'];
+        noteTagsItem.innerHTML = "";
+        result['tags'].forEach(tag => {
+            const template = document.querySelector("#template-note-info-tag-item");
+
+            const clone = template.content.cloneNode(true);
+            const label = clone.querySelector('label');
+            const checkbox = label.querySelector('input');
+
+            checkbox.setAttribute('checked', 'true');
+
+            checkbox.setAttribute('data-tag-uuid', tag['tag_id']);
+
+            label.innerHTML += tag['tag_name'];
+
+            // checkbox.addEventListener('click', switchTag)
+            noteTagsItem.appendChild(clone);
+            noteTagsItem.insertAdjacentHTML('beforeend', "<br>");
+        })
+
+        result['other_tags'].forEach(tag => {
+            const template = document.querySelector("#template-note-info-tag-item");
+
+            const clone = template.content.cloneNode(true);
+            const label = clone.querySelector('label');
+            const checkbox = clone.querySelector('input');
+
+            checkbox.removeAttribute('checked');
+
+            checkbox.setAttribute('data-tag-uuid', tag['tag_id']);
+
+            label.innerHTML += tag['tag_name'];
+
+            // checkbox.addEventListener('click', switchTag)
+            noteTagsItem.appendChild(clone);
+            noteTagsItem.insertAdjacentHTML('beforeend', "<br>");
+        })
+
+        switchOverlay('overlay-bg-note-menu', 'note-menu', 'flex')
+
+    })
+}
+
 
 function saveNote() {
     const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
-    const title = document.querySelector("#note-title").value;
-    const text = document.querySelector("#note-text").value;
+    const title = noteTitle.value;
+    const text = noteText.value;
 
 
     fetch("/save", {
@@ -46,9 +108,8 @@ function saveNote() {
 }
 
 function newNote() {
-    const note_id_item = document.querySelector("#note-title");
-    const title_item = document.querySelector("#note-title");
-    const text_item = document.querySelector("#note-text");
+    const title_item = noteTitle;
+    const text_item = noteText;
     const title = "New note";
     const text = "";
 
@@ -61,7 +122,7 @@ function newNote() {
     }).then(function (response) {
         return response.json()
     }).then(function (result) {
-        note_id_item.setAttribute('data-note-id', result['note_id']);
+        title_item.setAttribute('data-note-id', result['note_id']);
         title_item.value = title;
         text_item.value = text;
         addNoteItem(result['note_id'], title)
@@ -71,7 +132,7 @@ function newNote() {
 
 function deleteNote() {
 
-    const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
+    const note_id = noteTitle.getAttribute('data-note-id');
 
     fetch("/delete", {
         method: "POST",
@@ -81,10 +142,8 @@ function deleteNote() {
         body: JSON.stringify({'note_id': note_id})
     }).then(function () {
         removeNoteItem(note_id);
-        const title_item = document.querySelector("#note-title");
-        const text_item = document.querySelector("#note-text");
-        title_item.value = "";
-        text_item.value = "";
+        noteTitle.value = "";
+        noteText.value = "";
     })
 }
 
@@ -113,6 +172,6 @@ function addNoteItem(noteUUID, title) {
 document.querySelector(".save").addEventListener('click', saveNote);
 document.querySelector(".new-note").addEventListener('click', newNote);
 document.querySelector(".delete").addEventListener('click', deleteNote);
+document.querySelector(".tag").addEventListener('click', noteInfoOverlay);
 
 noteButtons.forEach(button => button.addEventListener('click', openNote));
-

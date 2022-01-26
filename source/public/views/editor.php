@@ -15,8 +15,8 @@
     <title>QuickNotes editor</title>
 </head>
 <body>
-    <div id="overlay-bg" class="overlay-bg" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')"></div>
-    <div id="user-account-menu" class="user-account-menu">
+    <div id="overlay-bg-account-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-account-menu', 'user-account-menu', 'flex')"></div>
+    <div id="user-account-menu" class="overlay">
         <h2>Your account details:</h2>
         User ID:<?= $user->getUUID() ?><br> <br>
         Nickname: <?= $user->getUsername() ?><br>
@@ -30,11 +30,25 @@
         <br>
         <button onclick="location.href = '/logout';" class="default-button">Logout</button>
     </div>
+
+    <div id="overlay-bg-note-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-note-menu', 'note-menu', 'flex')"></div>
+    <div id="note-menu" class="overlay">
+        Note: <div id="note-info-title"></div>
+        Date created: <div id="note-info-created"></div>
+        Last edited: <div id="note-info-edited"></div>
+        <input class="default-input" id="new-tag" placeholder="tag name...">
+        <button class="default-button" id="change-nickname-button"> Add new tag </button>
+        Tags: <br>
+        <div id="note-info-tags">
+        </div>
+
+    </div>
+
     <div class="left-panel-container" id="left-panel">
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
         <div id="choose-tags-form">
             <?php foreach ($user_tags as $tag): ?>
-                <label><input type="checkbox" checked="true" data-tag-uuid="<?= $tag->getUuid() ?>" value="<?= $tag->getName() ?>"><?= $tag->getName() ?></label>
+                <label><input type="checkbox" checked="true" data-tag-uuid="<?= $tag->getUuid() ?>" ><?= $tag->getName() ?></label>
             <?php endforeach; ?>
         </div>
     
@@ -82,7 +96,7 @@
                 <button class="dashboard-bt share" ></button>
                 <button class="dashboard-bt change-view" ></button>
                 <button class="dashboard-bt delete" ></button>
-                <button class="user-menu-button" onclick="switchOverlay('overlay-bg', 'user-account-menu', 'flex')"><?= $user->getUsername() ?></button>
+                <button class="user-menu-button" onclick="switchOverlay('overlay-bg-account-menu', 'user-account-menu', 'flex')"><?= $user->getUsername() ?></button>
             </div>
         </div>
         <div class="edit-fields-container">
@@ -99,6 +113,10 @@
 </body>
 <template id="template-note-item">
     <button class="left-panel-note-item" data-note-id=""></button>
+</template>
+
+<template id="template-note-info-tag-item">
+    <label><input type="checkbox" data-tag-uuid=""></label>
 </template>
 
 </html>

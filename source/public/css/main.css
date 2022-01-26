@@ -50,9 +50,9 @@ body {
     background: rgba(0, 0, 0, 0.50)
 }
 
-.user-account-menu {
+.overlay {
     position: fixed;
-    background: #B4B4B4;
+    background: #848484;
     display: none;
     flex-direction: column;
     justify-content: space-between;

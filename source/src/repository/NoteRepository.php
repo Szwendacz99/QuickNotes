@@ -52,6 +52,47 @@ class NoteRepository extends Repository
         return $notes;
     }
 
+    public function getNoteInfo($noteUUID) {
+        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note
+                                                                WHERE note_id = :note_id');
+        $query->bindParam(':note_id', $noteUUID, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($result == false) {
+            return null;
+        }
+        $note = new Note($result['note_id'], $result['title'], $result['text']);
+        $note->setTimeCreated(new DateTime( $result['creation_datetime']));
+        $note->setTimeLastEdit(new DateTime($result['last_edit']));
+
+        return $note;
+    }
+
+    public function getNoteTags($noteUUID) {
+        $tags = [];
+
+        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note n INNER JOIN
+                                                quicknotes_schema.note_tag nt on n.note_id = nt.note_id INNER JOIN
+                                                quicknotes_schema.tag t on nt.tag_id = t.tag_id
+                                                                WHERE n.note_id = :note_id');
+        $query->bindParam(':note_id', $noteUUID, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($result == false) {
+            return $tags;
+        }
+
+        foreach ($result as $tag) {
+            $tags[] = new Tag($tag['tag_id'], $tag['tag_name']);
+        }
+
+        return $tags;
+    }
+
     public function getNotesSharedForUser($userUUID): Array {
         $notes = [];
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note n INNER JOIN
