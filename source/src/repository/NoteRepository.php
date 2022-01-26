@@ -23,7 +23,7 @@ class NoteRepository extends Repository
        }
 
        foreach ($result as $note) {
-           $notes[] = new Note($note['title'], $note['text']);
+           $notes[] = new Note($note['note_id'], $note['title'], $note['text']);
        }
 
        return $notes;
@@ -70,6 +70,30 @@ class NoteRepository extends Repository
         }
 
         return $notes;
+    }
+
+    public function getNoteByUUID($uuid): ?Note {
+        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note
+                                                                WHERE note_id = :note_id');
+        $query->bindParam(':note_id', $uuid, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($result == false) {
+            return null;
+        }
+        return new Note($result['note_id'], $result['title'], $result['text']);
+    }
+
+    public function saveNote($uuid, $title, $text): void {
+        $query = $this->database->connect()->prepare('UPDATE quicknotes_schema.note
+                                                                SET text = :text, title = :title 
+                                                                WHERE note_id = :note_id');
+        $query->bindParam(':title', $title, PDO::PARAM_STR);
+        $query->bindParam(':text', $text, PDO::PARAM_STR);
+        $query->bindParam(':note_id', $uuid, PDO::PARAM_STR);
+        $query->execute();
     }
 
     public function getUserTags($userUUID): Array {

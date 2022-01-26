@@ -136,4 +136,18 @@ class UserRepository extends Repository
 
         return new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
     }
+
+    public function authorize(): bool {
+        if (! isset($_COOKIE['session_id']) ){
+            return false;
+        }
+        $user = $this->getUserBySessionUUID($_COOKIE['session_id']);
+
+        if ($user === null) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

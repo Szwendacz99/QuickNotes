@@ -17,8 +17,7 @@ class DefaultController extends AppController {
         $this->noteRepository = new NoteRepository();
     }
 
-    public function editor(): void
-    {
+    protected function authorize(): void {
         if (! isset($_COOKIE['session_id']) ){
             $this->unauthorizedExit();
         }
@@ -27,6 +26,22 @@ class DefaultController extends AppController {
         if ($this->user === null) {
             $this->unauthorizedExit();
         }
+    }
+
+    private function unauthorizedExit(){
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/login");
+    }
+
+    public function editor(): void
+    {
+        if (!$this->userRepository->authorize())
+        {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/login");
+        }
+
+        $this->user = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id']);
         
         $notes = $this->noteRepository->getUserNotes($this->user->getUuid());
         $shared_notes = $this->noteRepository->getNotesSharedByUser($this->user->getUuid());
@@ -39,11 +54,5 @@ class DefaultController extends AppController {
                 'shared_notes' => $shared_notes,
                 'shared_notes_from_others' => $shared_notes_from_others,
                 'user_tags' => $user_tags]);
-    }
-
-
-    private function unauthorizedExit(){
-        $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/login");
     }
 }

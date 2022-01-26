@@ -20,15 +20,23 @@ body {
     flex-flow: wrap-reverse;
     align-items: flex-end;
     justify-content: end;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .dashboard-bt {
     height: 5vh;
     width: 5vh;
-    margin-right: 0.5vh;
     background-color: rgba(0, 0, 0, 0);
     background-size: cover;
     border: 0;
+}
+
+.dashboard-bt:hover {
+    background-color: rgba(60, 60, 60, 0.5);
+}
+
+.dashboard-bt:active {
+    background-color: rgba(0, 60, 0, 70);
 }
 
 .new-note{
@@ -67,6 +75,7 @@ body {
 .left-panel-button {
     background-image: url("../icons/menu_icon.png");
     height: 5vh;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .edit-fields-container {

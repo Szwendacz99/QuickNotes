@@ -45,6 +45,7 @@
     font-size: 1.5vh;
     width: fit-content;
     font-weight: bold;
+    min-height: 1.5vh;
 }
 
 #choose-tags-form {

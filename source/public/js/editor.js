@@ -15,3 +15,20 @@ function switchOverlay(overlayBgId, overlayId, displayType) {
         document.getElementById(overlayBgId).style.display = "none";
     }
 }
+
+function saveNote() {
+    const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
+    const title = document.querySelector("#note-title").value;
+    const text = document.querySelector("#note-text").value;
+
+
+    fetch("/save", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'note_id': note_id, 'title': title, 'text': text})
+    });
+}
+
+document.querySelector(".save").addEventListener('click', saveNote);
