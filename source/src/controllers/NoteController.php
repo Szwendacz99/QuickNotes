@@ -99,6 +99,24 @@ class NoteController extends AppController {
         }
     }
 
+    public function untagnote() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $this->noteRepository->removeTagFromNote($content->tag_id, $content->note_id);
+        }
+    }
+
     public function save() {
         if (!$this->userRepository->authorize())
         {

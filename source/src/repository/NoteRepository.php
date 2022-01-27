@@ -100,6 +100,14 @@ class NoteRepository extends Repository
         $query->execute();
     }
 
+    public function removeTagFromNote($tagUUID, $noteUUID) {
+        $query = $this->database->connect()->prepare('DELETE FROM quicknotes_schema.note_tag 
+                                                    WHERE note_id = :note_id AND tag_id = :tag_id');
+        $query->bindParam(':note_id', $noteUUID, PDO::PARAM_STR);
+        $query->bindParam(':tag_id', $tagUUID, PDO::PARAM_STR);
+        $query->execute();
+    }
+
     public function getNotesSharedForUser($userUUID): Array {
         $notes = [];
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note n INNER JOIN

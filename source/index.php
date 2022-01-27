@@ -17,5 +17,6 @@ router::post('delete', 'NoteController');
 router::post('nickname', 'SecurityController');
 router::post('noteinfo', 'NoteController');
 router::post('tagnote', 'NoteController');
+router::post('untagnote', 'NoteController');
 
 Router::run($path);

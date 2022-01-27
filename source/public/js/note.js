@@ -74,20 +74,27 @@ function addTagItem(container, checked, tag) {
     container.insertAdjacentHTML('beforeend', "<br>");
 }
 
-function addTagToNote(obj) {
+function addTagToNote(tag_checkbox) {
     const note_id = noteTitle.getAttribute('data-note-id');
     console.log("test");
-    if (obj.checked) {
+    if (tag_checkbox.checked) {
         fetch("/tagnote", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({'note_id': note_id, 'tag_id': obj.getAttribute('data-tag-uuid')})
+            body: JSON.stringify({'note_id': note_id, 'tag_id': tag_checkbox.getAttribute('data-tag-uuid')})
+        })
+    } else {
+        fetch("/untagnote", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'note_id': note_id, 'tag_id': tag_checkbox.getAttribute('data-tag-uuid')})
         })
     }
 }
-
 
 function saveNote() {
     const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
