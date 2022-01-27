@@ -37,7 +37,7 @@
         Date created: <div id="note-info-created"></div>
         Last edited: <div id="note-info-edited"></div>
         <input class="default-input" id="new-tag" placeholder="tag name...">
-        <button class="default-button" id="change-nickname-button"> Add new tag </button>
+        <button class="default-button" id="new-tag-button"> Add new tag </button>
         Tags: <br>
         <div id="note-info-tags">
         </div>

@@ -49,7 +49,7 @@
 }
 
 #choose-tags-form {
-    display: flex;
+    display: none;
     flex-direction: column;
     padding: 0.5vh;
     font-size: 2vh;

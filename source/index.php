@@ -18,5 +18,6 @@ router::post('nickname', 'SecurityController');
 router::post('noteinfo', 'NoteController');
 router::post('tagnote', 'NoteController');
 router::post('untagnote', 'NoteController');
+router::post('newtag', 'NoteController');
 
 Router::run($path);

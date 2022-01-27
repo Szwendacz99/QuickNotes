@@ -192,4 +192,25 @@ class NoteRepository extends Repository
         return $tags;
     }
 
+    public function createTag($userUUID, $tagName): ?string {
+        $tag_id = Utils::uuid();
+
+        $currentTags = $this->getUserTags($userUUID);
+        foreach ($currentTags as $tag) {
+            if ($tag->getName() === $tagName) {
+                return null;
+            }
+        }
+
+        $query = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.tag
+                                                            (tag_id, tag_name, user_id) VALUES 
+                                                            (:tag_id, :tag_name, :user_id)');
+        $query->bindParam(':tag_id', $tag_id, PDO::PARAM_STR);
+        $query->bindParam(':tag_name', $tagName, PDO::PARAM_STR);
+        $query->bindParam(':user_id', $userUUID, PDO::PARAM_STR);
+        $query->execute();
+
+        return $tag_id;
+    }
+
 }

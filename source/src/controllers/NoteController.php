@@ -99,6 +99,31 @@ class NoteController extends AppController {
         }
     }
 
+    public function newtag() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $userUUID = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid();
+
+            $tag_id = $this->noteRepository->createTag($userUUID, $content->tag_name);
+            if ($tag_id === null) {
+                echo json_encode(['result' => 'notok']);
+                return;
+            }
+            echo json_encode(['result' => 'ok', 'tag_id' => $tag_id]);
+        }
+    }
+
     public function untagnote() {
         if (!$this->userRepository->authorize())
         {

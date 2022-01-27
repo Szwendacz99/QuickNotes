@@ -51,6 +51,33 @@ function noteInfoOverlay() {
     })
 }
 
+function createTag() {
+    const note_id = noteTitle.getAttribute('data-note-id');
+    const tagName = document.querySelector('#new-tag').value;
+    const noteTagsItem = document.querySelector('#note-info-tags');
+    const chooseTagsForm = document.querySelector("#choose-tags-form");
+
+    fetch("/newtag", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'tag_name': tagName, 'note_id': note_id})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (result) {
+
+        if (result['result'] === 'ok') {
+            const tagDict = {'tag_name': tagName, 'tag_id': result['tag_id']};
+            const checkbox = addTagItem(noteTagsItem, true, tagDict)
+            addTagItem(chooseTagsForm, true, tagDict)
+
+            addTagToNote(checkbox)
+        }
+
+    })
+}
+
 function addTagItem(container, checked, tag) {
     const template = document.querySelector("#template-note-info-tag-item");
 
@@ -72,6 +99,7 @@ function addTagItem(container, checked, tag) {
     // checkbox.addEventListener('click', switchTag)
     container.appendChild(clone);
     container.insertAdjacentHTML('beforeend', "<br>");
+    return checkbox;
 }
 
 function addTagToNote(tag_checkbox) {
@@ -97,7 +125,7 @@ function addTagToNote(tag_checkbox) {
 }
 
 function saveNote() {
-    const note_id = document.querySelector("#note-title").getAttribute('data-note-id');
+    const note_id = noteTitle.getAttribute('data-note-id');
     const title = noteTitle.value;
     const text = noteText.value;
 
@@ -185,5 +213,7 @@ document.querySelector(".save").addEventListener('click', saveNote);
 document.querySelector(".new-note").addEventListener('click', newNote);
 document.querySelector(".delete").addEventListener('click', deleteNote);
 document.querySelector(".tag").addEventListener('click', noteInfoOverlay);
+
+document.querySelector("#new-tag-button").addEventListener('click', createTag);
 
 noteButtons.forEach(button => button.addEventListener('click', openNote));
