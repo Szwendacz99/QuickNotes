@@ -32,11 +32,25 @@
         <button onclick="location.href = '/logout';" class="default-button">Logout</button>
     </div>
 
+    <div id="overlay-bg-sharing-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-sharing-menu', 'sharing-menu', 'flex')"></div>
+    <div id="sharing-menu" class="overlay">
+        <h2>Sharing menu</h2>
+        <input class="default-input" oninput="console.log('test')" id="username-share" placeholder="Search for user...">
+        <button class="default-button" id="share-button" > Share </button>
+        Possible users: <br>
+        <div id="share-users-list" class="manage-note-tags">
+        </div>
+
+    </div>
+
     <div id="overlay-bg-note-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-note-menu', 'note-menu', 'flex')"></div>
     <div id="note-menu" class="overlay">
-        Note: <div id="note-info-title"></div>
-        Date created: <div id="note-info-created"></div>
-        Last edited: <div id="note-info-edited"></div>
+        <div class="info">
+            <h4>Note tags</h4>
+            <h5>Note:</h5> <div id="note-info-title"></div>
+            <h5>Date created:</h5> <div id="note-info-created"></div>
+            <h5>Last edited: </h5><div id="note-info-edited"></div>
+        </div>
         <input class="default-input" id="new-tag" placeholder="tag name...">
         <button class="default-button" id="new-tag-button"> Add new tag </button>
         Tags: <br>
@@ -94,7 +108,7 @@
                 <button class="dashboard-bt new-note" ></button>
                 <button class="dashboard-bt save" ></button>
                 <button class="dashboard-bt tag" ></button>
-                <button class="dashboard-bt share" ></button>
+                <button class="dashboard-bt share" onclick="switchOverlay('overlay-bg-sharing-menu', 'sharing-menu', 'flex')"></button>
                 <button class="dashboard-bt change-view" ></button>
                 <button class="dashboard-bt delete" ></button>
                 <button class="user-menu-button" onclick="switchOverlay('overlay-bg-account-menu', 'user-account-menu', 'flex')"><?= $user->getUsername() ?></button>

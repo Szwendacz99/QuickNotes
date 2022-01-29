@@ -65,6 +65,10 @@ body {
     border: 0;
 }
 
+h5 {
+    margin: 0.5vh;
+}
+
 .top-panel{
     display: flex;
     flex-direction: row;

@@ -96,7 +96,6 @@ function filterByTag() {
     }).then(function (notes) {
         document.querySelector("#your-notes-list").querySelectorAll("button").forEach((button => {
             button.style.display = "none";
-            console.log("test");
             notes.forEach(note => {
                 if (button.getAttribute('data-note-id') === note['note_id']) {
                     button.style.display = 'flex';
@@ -147,7 +146,6 @@ function addTagItem(container, checked, tag) {
 
 function addTagToNote(tag_checkbox) {
     const note_id = noteTitle.getAttribute('data-note-id');
-    console.log("test");
     if (tag_checkbox.checked) {
         fetch("/tagnote", {
             method: "POST",

@@ -50,6 +50,11 @@ body {
     background: rgba(0, 0, 0, 0.50)
 }
 
+.info {
+    word-break: break-word;
+    width: 100%;
+}
+
 .overlay {
     position: fixed;
     background: #848484;
