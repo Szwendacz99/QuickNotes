@@ -8,6 +8,7 @@
     <script type="text/javascript" src="public/js/editor.js" defer></script>
     <script type="text/javascript" src="public/js/note.js" defer></script>
     <script type="text/javascript" src="public/js/account.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -102,9 +103,9 @@
         <div class="edit-fields-container">
             <input class="editing-panel editing-panel-title" data-note-id="" id="note-title" value="" type="text" name="title">
 
-            <div class="edit-textareas-container">
+            <div class="edit-textarea-container">
                 <textarea class="editing-panel" id="note-text" name="note_input"></textarea>
-                <textarea class="editing-panel" id="note-display" disabled="disabled" name="display"></textarea>
+                <div class="editing-panel" id="note-display"></div>
             </div>
         </div>
     </div>

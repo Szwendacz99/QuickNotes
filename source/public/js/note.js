@@ -13,11 +13,12 @@ function openNote() {
         },
         body: note_id
     }).then(function (response) {
-        return response.json()
+        return response.json();
     }).then(function (result) {
         noteTitle.value = result['title'];
         noteText.value= result['text'];
-        noteTitle.setAttribute('data-note-id', result['note_id'])
+        noteTitle.setAttribute('data-note-id', result['note_id']);
+        viewUpdate();
     })
 }
 
@@ -194,8 +195,6 @@ function saveNote() {
 }
 
 function newNote() {
-    const title_item = noteTitle;
-    const text_item = noteText;
     const title = "New note";
     const text = "";
 
@@ -208,9 +207,9 @@ function newNote() {
     }).then(function (response) {
         return response.json()
     }).then(function (result) {
-        title_item.setAttribute('data-note-id', result['note_id']);
-        title_item.value = title;
-        text_item.value = text;
+        noteTitle.setAttribute('data-note-id', result['note_id']);
+        noteTitle.value = title;
+        noteText.value = text;
         addNoteItem(result['note_id'], title)
     })
 
