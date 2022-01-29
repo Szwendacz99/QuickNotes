@@ -13,6 +13,7 @@
 
 .button-choose-tags {
     height: 5vh;
+    min-height: 5vh;
     width: 100%;
     font-size: 2vh;
 }
@@ -39,6 +40,7 @@
 }
 
 .left-panel-note-item {
+    display: flex;
     border: 0;
     background-color: #B5E4FF;
     border-radius: 1vh;

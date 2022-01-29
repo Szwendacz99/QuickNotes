@@ -19,5 +19,6 @@ router::post('noteinfo', 'NoteController');
 router::post('tagnote', 'NoteController');
 router::post('untagnote', 'NoteController');
 router::post('newtag', 'NoteController');
+router::post('notesbytags', 'NoteController');
 
 Router::run($path);

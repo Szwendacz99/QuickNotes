@@ -74,7 +74,7 @@ body {
 .left-panel-button {
     background-image: url("../icons/menu_icon.png");
     height: 5vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .edit-fields-container {
@@ -85,6 +85,13 @@ body {
     padding-right: 1vh;
     gap: 1vh;
     align-items: center;
+}
+
+.manage-note-tags {
+    flex-direction: column;
+    display: flex;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .edit-textareas-container {

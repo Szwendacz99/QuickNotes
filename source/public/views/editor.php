@@ -39,7 +39,7 @@
         <input class="default-input" id="new-tag" placeholder="tag name...">
         <button class="default-button" id="new-tag-button"> Add new tag </button>
         Tags: <br>
-        <div id="note-info-tags">
+        <div id="note-info-tags" class="manage-note-tags">
         </div>
 
     </div>
@@ -48,7 +48,7 @@
         <button class="button-choose-tags" onclick="switchDisplay('choose-tags-form', 'flex')">Choose tags ↓</button>
         <div id="choose-tags-form">
             <?php foreach ($user_tags as $tag): ?>
-                <label><input type="checkbox" checked="true" data-tag-uuid="<?= $tag->getUuid() ?>" ><?= $tag->getName() ?></label>
+                <label><input type="checkbox" checked onChange="filterByTag()" data-tag-uuid="<?= $tag->getUuid() ?>" ><?= $tag->getName() ?></label>
             <?php endforeach; ?>
         </div>
     

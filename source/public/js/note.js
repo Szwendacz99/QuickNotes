@@ -69,14 +69,57 @@ function createTag() {
 
         if (result['result'] === 'ok') {
             const tagDict = {'tag_name': tagName, 'tag_id': result['tag_id']};
-            const checkbox = addTagItem(noteTagsItem, true, tagDict)
-            addTagItem(chooseTagsForm, true, tagDict)
+            const checkboxInOverlay = addTagItem(noteTagsItem, true, tagDict);
+            const checkboxInLeftPanel = addTagItem(chooseTagsForm, true, tagDict);
 
-            addTagToNote(checkbox)
+            checkboxInLeftPanel.setAttribute("onChange", "filterByTag()");
+
+            addTagToNote(checkboxInOverlay);
+            filterByTag();
         }
 
     })
 }
+
+function filterByTag() {
+    const ids = getNotCheckedTagsId();
+
+    fetch("/notesbytags", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'tags': ids})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (notes) {
+        document.querySelector("#your-notes-list").querySelectorAll("button").forEach((button => {
+            button.style.display = "none";
+            console.log("test");
+            notes.forEach(note => {
+                if (button.getAttribute('data-note-id') === note['note_id']) {
+                    button.style.display = 'flex';
+                }
+            })
+        }))
+    })
+}
+
+function getNotCheckedTagsId() {
+    const tagsContainer = document.querySelector("#choose-tags-form")
+
+    let list = ['00000000-0000-0000-0000-000000000000'];
+
+    tagsContainer.querySelectorAll('input').forEach( checkbox => {
+        if (!checkbox.checked) {
+            list.push(checkbox.getAttribute('data-tag-uuid'))
+        }
+    })
+    // console.log(list.pop());
+    return list;
+}
+
+
 
 function addTagItem(container, checked, tag) {
     const template = document.querySelector("#template-note-info-tag-item");
@@ -98,7 +141,6 @@ function addTagItem(container, checked, tag) {
 
     // checkbox.addEventListener('click', switchTag)
     container.appendChild(clone);
-    container.insertAdjacentHTML('beforeend', "<br>");
     return checkbox;
 }
 
@@ -112,6 +154,8 @@ function addTagToNote(tag_checkbox) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({'note_id': note_id, 'tag_id': tag_checkbox.getAttribute('data-tag-uuid')})
+        }).then((result) => {
+            filterByTag();
         })
     } else {
         fetch("/untagnote", {
@@ -120,6 +164,8 @@ function addTagToNote(tag_checkbox) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({'note_id': note_id, 'tag_id': tag_checkbox.getAttribute('data-tag-uuid')})
+        }).then((result) => {
+            filterByTag();
         })
     }
 }

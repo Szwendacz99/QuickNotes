@@ -81,6 +81,33 @@ class NoteController extends AppController {
         }
     }
 
+    public function notesbytags() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $userUUID = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid();
+
+            $notes = $this->noteRepository->getNotesByTagsReversed($content->tags, $userUUID);
+
+            $notesValues = [];
+
+            foreach ($notes as $note){
+                $notesValues[] = ['note_id' => $note->getUuid(), 'title' => $note->getTitle()];
+            }
+            echo json_encode($notesValues);
+        }
+    }
+
     public function tagnote() {
         if (!$this->userRepository->authorize())
         {
