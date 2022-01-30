@@ -24,6 +24,6 @@ Router::post('share', 'NoteController');
 Router::post('finduser', 'DefaultController');
 Router::post('noteshares', 'NoteController');
 Router::post('unshare', 'NoteController');
-Router::post('shares', 'DefaultController');
+Router::get('shares', 'DefaultController');
 
 Router::run($path);
