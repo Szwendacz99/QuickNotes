@@ -15,5 +15,10 @@ App will be available on http://localhost:8080/
 
 You can also create new account without email verification.
 
+## Database ERD:
+![](quicknotes_schema.png)
+
+---
+
 This app uses a markdown formatting library "marked", available under  
 https://github.com/markedjs/marked
