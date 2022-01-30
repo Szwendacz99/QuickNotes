@@ -61,7 +61,38 @@ function syncScrollFromView() {
     textInput.scrollTop = view.scrollTop;
 }
 
+function searchForUsers() {
+    const username = document.querySelector("#username-share-input").value
+
+    fetch("/finduser", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'username': username})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (result) {
+        const listComponent = document.querySelector('#share-users-list');
+        listComponent.innerHTML = "";
+
+        const exactMatch = result.find(name => {
+            return name === username;
+        });
+        if (exactMatch !== undefined) {
+            listComponent.insertAdjacentHTML('beforeend',
+                "<div style='color: green'>"+exactMatch + "</div>");
+        }
+
+        for (let i = 0; i< result.length ; i++) {
+            listComponent.insertAdjacentHTML('beforeend',
+                "<div>"+result[i]+"</div>");
+        }
+    })
+}
+
 document.querySelector("#note-text").addEventListener('input', viewUpdate);
 document.querySelector(".change-view").addEventListener('click', switchEditor);
 document.querySelector("#note-text").addEventListener('scroll', syncScrollFromInput);
 document.querySelector("#note-display").addEventListener('scroll', syncScrollFromView);
+document.querySelector("#username-share-input").addEventListener('input', searchForUsers);

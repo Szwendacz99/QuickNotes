@@ -17,20 +17,33 @@ class DefaultController extends AppController {
         $this->noteRepository = new NoteRepository();
     }
 
-    protected function authorize(): void {
-        if (! isset($_COOKIE['session_id']) ){
-            $this->unauthorizedExit();
+    public function finduser() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
         }
-        $this->user = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id']);
 
-        if ($this->user === null) {
-            $this->unauthorizedExit();
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $users = $this->userRepository->getUsersByNickname($content->username);
+            $usersArray = [];
+
+            if ($users == null) {
+                echo json_encode($usersArray);
+                return;
+            }
+
+            foreach ($users as $user) {
+                $usersArray[] = $user->getUsername();
+            }
+            echo json_encode($usersArray);
         }
-    }
-
-    private function unauthorizedExit(){
-        $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/login");
     }
 
     public function editor(): void
@@ -55,4 +68,21 @@ class DefaultController extends AppController {
                 'shared_notes_from_others' => $shared_notes_from_others,
                 'user_tags' => $user_tags]);
     }
+
+    public function shares() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+        $this->user = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id']);
+        $shared_notes = $this->noteRepository->getNotesSharedByUser($this->user->getUuid());
+        $shared_notes_from_others = $this->noteRepository->getNotesSharedForUser($this->user->getUuid());
+
+        $this->render('shares',
+            [
+                'shared_notes' => $shared_notes,
+                'shared_notes_from_others' => $shared_notes_from_others,
+                ]);
+    }
+
 }

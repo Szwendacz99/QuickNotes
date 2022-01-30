@@ -174,7 +174,6 @@ function saveNote() {
     const title = noteTitle.value;
     const text = noteText.value;
 
-
     fetch("/save", {
         method: "POST",
         headers: {
@@ -190,6 +189,96 @@ function saveNote() {
             item.innerHTML = title;
         }
     })
+}
+
+function openShareMenu() {
+
+    const noteId = noteTitle.getAttribute('data-note-id');
+
+    fetch("/noteshares", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'note_id': noteId})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (shares) {
+        document.querySelector("#current-shares-of-note").innerHTML = "";
+        shares.forEach(username => {
+            addNewUnshareButton(username['username']);
+        })
+    })
+
+    switchOverlay('overlay-bg-sharing-menu', 'sharing-menu', 'flex');
+}
+
+function share() {
+    const username = document.querySelector("#username-share-input").value
+    const note_id = noteTitle.getAttribute('data-note-id');
+
+    fetch("/share", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'note_id': note_id, 'username': username})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (result) {
+        if (result['result'] === 'ok') {
+            addNewUnshareButton(username);
+            refreshShares();
+        }
+    })
+}
+
+function unshare(username, button) {
+    const note_id = noteTitle.getAttribute('data-note-id');
+
+    fetch("/unshare", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'note_id': note_id, 'username': username})
+    }).then(function (response) {
+        return response.json()
+    }).then(function (result) {
+        if (result['result'] === 'ok') {
+            button.innerHTML = "Unshared !";
+        }
+        refreshShares()
+    })
+}
+
+function refreshShares() {
+    const container = document.querySelector("#shares-panel")
+
+    fetch("/shares", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        response.text().then(text => {
+            container.innerHTML = text;
+        });
+    })
+}
+
+function addNewUnshareButton(username) {
+    const template = document.querySelector("#user-for-unshare-button");
+    // <div><label>User 1</label> - <button className="default-button">Unshare</button></div>
+    const clone = template.content.cloneNode(true);
+    const button = clone.querySelector('button');
+    const label = clone.querySelector('label');
+
+    label.innerHTML = username;
+
+    button.setAttribute('onClick', "unshare('"+username+"', this)");
+
+    document.querySelector("#current-shares-of-note").appendChild(clone);
 }
 
 function newNote() {
@@ -208,12 +297,16 @@ function newNote() {
         noteTitle.setAttribute('data-note-id', result['note_id']);
         noteTitle.value = title;
         noteText.value = text;
-        addNoteItem(result['note_id'], title)
+        const container = document.querySelector("#your-notes-list")
+        addNoteItem(container, result['note_id'], title)
     })
-
 }
 
 function deleteNote() {
+
+    if (!confirm("Do you really want to delete this note?")) {
+        return;
+    }
 
     const note_id = noteTitle.getAttribute('data-note-id');
 
@@ -227,6 +320,7 @@ function deleteNote() {
         removeNoteItem(note_id);
         noteTitle.value = "";
         noteText.value = "";
+        viewUpdate();
     })
 }
 
@@ -239,7 +333,7 @@ function removeNoteItem(note_id) {
 
 }
 
-function addNoteItem(noteUUID, title) {
+function addNoteItem(container, noteUUID, title) {
     const template = document.querySelector("#template-note-item");
 
     const clone = template.content.cloneNode(true);
@@ -248,7 +342,7 @@ function addNoteItem(noteUUID, title) {
 
     button.setAttribute('data-note-id', noteUUID);
     button.addEventListener('click', openNote)
-    document.querySelector("#your-notes-list").appendChild(clone);
+    container.appendChild(clone);
 
 }
 
@@ -256,7 +350,10 @@ document.querySelector(".save").addEventListener('click', saveNote);
 document.querySelector(".new-note").addEventListener('click', newNote);
 document.querySelector(".delete").addEventListener('click', deleteNote);
 document.querySelector(".tag").addEventListener('click', noteInfoOverlay);
+document.querySelector('.share').addEventListener('click', openShareMenu);
 
 document.querySelector("#new-tag-button").addEventListener('click', createTag);
 
 noteButtons.forEach(button => button.addEventListener('click', openNote));
+
+document.querySelector('#share-button').addEventListener('click', share);

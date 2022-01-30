@@ -35,23 +35,27 @@
     <div id="overlay-bg-sharing-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-sharing-menu', 'sharing-menu', 'flex')"></div>
     <div id="sharing-menu" class="overlay">
         <h2>Sharing menu</h2>
-        <input class="default-input" oninput="console.log('test')" id="username-share" placeholder="Search for user...">
+        <div class="info" id="current-shares-of-note">
+
+        </div>
+        <input class="default-input" autocomplete="off" oninput="searchForUsers()" id="username-share-input" placeholder="Search for user...">
         <button class="default-button" id="share-button" > Share </button>
         Possible users: <br>
-        <div id="share-users-list" class="manage-note-tags">
+        <div class="info">
+            <div id="share-users-list" class="manage-note-tags">
+            </div>
         </div>
-
     </div>
 
     <div id="overlay-bg-note-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-note-menu', 'note-menu', 'flex')"></div>
     <div id="note-menu" class="overlay">
+        <h2>Note tags</h2>
         <div class="info">
-            <h4>Note tags</h4>
             <h5>Note:</h5> <div id="note-info-title"></div>
             <h5>Date created:</h5> <div id="note-info-created"></div>
             <h5>Last edited: </h5><div id="note-info-edited"></div>
         </div>
-        <input class="default-input" id="new-tag" placeholder="tag name...">
+        <input class="default-input" autocomplete="off" id="new-tag" placeholder="tag name...">
         <button class="default-button" id="new-tag-button"> Add new tag </button>
         Tags: <br>
         <div id="note-info-tags" class="manage-note-tags">
@@ -75,28 +79,8 @@
                 <button class="left-panel-note-item" data-note-id="<?= $note->getUuid() ?>"><?= $note->getTitle() ?></button>
             <?php endforeach; ?>
         </div>
-        <div id="your-shared-notes-list"  class="left-panel-field-container">
-            <div class="left-panel-field-header">
-                Shared by You:
-            </div>
-            <?php foreach (array_keys($shared_notes) as $other_user): ?>
-                <div class="left-panel-field-subheader">For <?=$other_user?></div>
-                <?php foreach ($shared_notes[$other_user] as $note): ?>
-                    <button class="left-panel-note-item" data-note-id="<?= $note->getNoteUUID() ?>"><?= $note->getTitle() ?></button>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-        </div>
-        <div id="others-shared-notes-list" class="left-panel-field-container">
-            <div class="left-panel-field-header">
-                Shared by others:
-            </div>
-            <?php foreach (array_keys($shared_notes_from_others) as $other_user): ?>
-                <div class="left-panel-field-subheader">From <?=$other_user?></div>
-                <?php foreach ($shared_notes_from_others[$other_user] as $note): ?>
-                    <button class="left-panel-note-item" data-note-id="<?= $note->getNoteUUID() ?>"><?= $note->getTitle() ?></button>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-
+        <div id="shares-panel">
+        <?php include 'shares.php'?>
         </div>
     </div>
 
@@ -108,7 +92,7 @@
                 <button class="dashboard-bt new-note" ></button>
                 <button class="dashboard-bt save" ></button>
                 <button class="dashboard-bt tag" ></button>
-                <button class="dashboard-bt share" onclick="switchOverlay('overlay-bg-sharing-menu', 'sharing-menu', 'flex')"></button>
+                <button class="dashboard-bt share"></button>
                 <button class="dashboard-bt change-view" ></button>
                 <button class="dashboard-bt delete" ></button>
                 <button class="user-menu-button" onclick="switchOverlay('overlay-bg-account-menu', 'user-account-menu', 'flex')"><?= $user->getUsername() ?></button>
@@ -132,6 +116,10 @@
 
 <template id="template-note-info-tag-item">
     <label><input type="checkbox" data-tag-uuid=""></label>
+</template>
+
+<template id="user-for-unshare-button">
+    <div><label>User 1</label> - <button class="default-button">Unshare</button></div>
 </template>
 
 </html>

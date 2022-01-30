@@ -166,6 +166,28 @@ class UserRepository extends Repository
         return new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
     }
 
+    public function getUsersByNickname(string $nickname): ?array {
+        $nickname = "%".$nickname."%";
+        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.user 
+                                                                WHERE username LIKE :username LIMIT 50');
+        $query->bindParam(':username', $nickname, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($result == false) {
+            return null;
+        }
+
+        $users = [];
+
+        foreach ($result as $user) {
+            $users[] = new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
+        }
+
+        return $users;
+    }
+
     public function authorize(): bool {
         if (! isset($_COOKIE['session_id']) ){
             return false;

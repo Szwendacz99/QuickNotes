@@ -18,7 +18,7 @@ class NoteRepository extends Repository
 
        $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-       if ($result == false) {
+       if ($result === false) {
            return $notes;
        }
 
@@ -42,7 +42,7 @@ class NoteRepository extends Repository
 
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result == false) {
+        if ($result === false) {
             return $notes;
         }
         foreach ($result as $note) {
@@ -60,7 +60,7 @@ class NoteRepository extends Repository
 
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($result == false) {
+        if ($result === false) {
             return null;
         }
         $note = new Note($result['note_id'], $result['title'], $result['text']);
@@ -82,7 +82,7 @@ class NoteRepository extends Repository
 
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result == false) {
+        if ($result === false) {
             return $tags;
         }
 
@@ -118,7 +118,7 @@ class NoteRepository extends Repository
 
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result == false) {
+        if ($result === false) {
             return $notes;
         }
         foreach ($result as $note) {
@@ -136,7 +136,7 @@ class NoteRepository extends Repository
 
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($result == false) {
+        if ($result === false) {
             return null;
         }
         return new Note($result['note_id'], $result['title'], $result['text']);
@@ -144,7 +144,7 @@ class NoteRepository extends Repository
 
     public function saveNote(string $uuid, string $title, string $text): void {
         $query = $this->database->connect()->prepare('UPDATE quicknotes_schema.note
-                                                                SET text = :text, title = :title 
+                                                                SET text = :text, title = :title, last_edit = NOW()
                                                                 WHERE note_id = :note_id');
         $query->bindParam(':title', $title, PDO::PARAM_STR);
         $query->bindParam(':text', $text, PDO::PARAM_STR);
@@ -174,6 +174,42 @@ class NoteRepository extends Repository
         $query->execute();
     }
 
+    public function getNoteSharesUsernames(string $note_id, string $userUUID): ?array {
+
+        $query = $this->database->connect()->prepare('SELECT username FROM quicknotes_schema.note n INNER JOIN 
+                                        quicknotes_schema.note_share ns on n.note_id = ns.note_id INNER JOIN 
+                                            quicknotes_schema.user u on u.user_id = ns.user_id WHERE 
+                                            ns.note_id = :note_id AND n.user_id = :user_id');
+        $query->bindParam(':note_id', $note_id, PDO::PARAM_STR);
+        $query->bindParam(':user_id', $userUUID, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($result === false) {
+            return [];
+        }
+
+        return $result;
+    }
+
+    public function shareNote(string $note_id, string $userUUID): bool {
+        $query = $this->database->connect()->prepare('INSERT INTO quicknotes_schema.note_share
+                                                            (note_id, user_id) VALUES 
+                                                            (:note_id, :user_id)');
+        $query->bindParam(':user_id', $userUUID, PDO::PARAM_STR);
+        $query->bindParam(':note_id', $note_id, PDO::PARAM_STR);
+        return $query->execute();
+    }
+
+    public function unshareNote(string $note_id, string $userUUID): bool {
+        $query = $this->database->connect()->prepare('DELETE FROM quicknotes_schema.note_share WHERE
+                                                            note_id = :note_id AND user_id = :user_id');
+        $query->bindParam(':user_id', $userUUID, PDO::PARAM_STR);
+        $query->bindParam(':note_id', $note_id, PDO::PARAM_STR);
+        return $query->execute();
+    }
+
     public function getUserTags(string $userUUID): Array {
         $tags = [];
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.tag n WHERE user_id = :uuid');
@@ -182,7 +218,7 @@ class NoteRepository extends Repository
 
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result == false) {
+        if ($result === false) {
             return $tags;
         }
         foreach ($result as $tag) {

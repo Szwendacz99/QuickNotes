@@ -108,6 +108,28 @@ class NoteController extends AppController {
         }
     }
 
+    public function noteshares() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $userUUID = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid();
+
+            $usernames = $this->noteRepository->getNoteSharesUsernames($content->note_id, $userUUID);
+
+            echo json_encode($usernames);
+        }
+    }
+
     public function tagnote() {
         if (!$this->userRepository->authorize())
         {
@@ -184,6 +206,55 @@ class NoteController extends AppController {
             http_response_code(200);
 
             $this->noteRepository->saveNote($content->note_id, $content->title, $content->text);
+        }
+    }
+
+    public function share() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $userUUID = $this->userRepository->getUserByNickname($content->username)->getUuid();
+
+            if ($userUUID === $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid()) {
+                echo json_encode(['result' => 'nope']);
+                return;
+            }
+
+            $result = $this->noteRepository->shareNote($content->note_id, $userUUID);
+            if ($result) {
+                echo json_encode(['result' => 'ok']);
+            }
+        }
+    }
+
+    public function unshare() {
+        if (!$this->userRepository->authorize())
+        {
+            return;
+        }
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+        if ($contentType === "application/json") {
+            $content = json_decode(trim(file_get_contents("php://input")));
+
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            $userUUID = $this->userRepository->getUserByNickname($content->username)->getUuid();
+
+            $this->noteRepository->unshareNote($content->note_id, $userUUID);
+            echo json_encode(['result' => 'ok']);
         }
     }
 

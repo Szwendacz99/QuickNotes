@@ -69,6 +69,10 @@ h5 {
     margin: 0.5vh;
 }
 
+h2 {
+    margin: 1vh;
+}
+
 .top-panel{
     display: flex;
     flex-direction: row;
