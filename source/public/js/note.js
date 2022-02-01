@@ -273,7 +273,6 @@ function refreshShares() {
 
 function addNewUnshareButton(username) {
     const template = document.querySelector("#user-for-unshare-button");
-    // <div><label>User 1</label> - <button className="default-button">Unshare</button></div>
     const clone = template.content.cloneNode(true);
     const button = clone.querySelector('button');
     const label = clone.querySelector('label');

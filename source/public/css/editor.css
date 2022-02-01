@@ -1,7 +1,6 @@
 body {
     display: flex;
     flex-direction: row;
-    /*height: 100vh;*/
 }
 
 .editor-container {
@@ -121,7 +120,7 @@ h2 {
     border: 0;
     background-color: rgba(0, 0, 0, 0.70);
     border-radius: 0.5vh;
-    font-size: 16px;
+    font-size: 2vh;
     color: white;
     resize: none;
     max-width: 50%;
@@ -136,8 +135,8 @@ h2 {
     text-align: center;
     font-weight: bold;
     overflow-y: hidden;
-    min-height: 2vh;
-    max-height: 2vh;
+    min-height: 2.5vh;
+    max-height: 2.5vh;
     min-width: 100%;
     margin: 0;
     border: 0;
