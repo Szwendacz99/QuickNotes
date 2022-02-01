@@ -1,7 +1,7 @@
 const noteTitle = document.querySelector("#note-title");
 const noteText = document.querySelector("#note-text");
 
-const noteButtons = document.querySelectorAll(".left-panel-note-item");
+let noteButtons = document.querySelectorAll(".left-panel-note-item");
 
 function openNote() {
     const note_id = this.getAttribute('data-note-id');
@@ -115,7 +115,6 @@ function getNotCheckedTagsId() {
             list.push(checkbox.getAttribute('data-tag-uuid'))
         }
     })
-    // console.log(list.pop());
     return list;
 }
 
@@ -133,13 +132,16 @@ function addTagItem(container, checked, tag) {
     } else {
         checkbox.setAttribute('checked', 'true');
     }
+    if (container.getAttribute('id') !== "choose-tags-form") {
+        checkbox.setAttribute('onChange', 'addTagToNote(this)');
+    } else {
+        checkbox.setAttribute('onChange', 'filterByTag()');
+    }
 
-    checkbox.setAttribute('onChange', 'addTagToNote(this)')
     checkbox.setAttribute('data-tag-uuid', tag['tag_id']);
 
     label.innerHTML += tag['tag_name'];
 
-    // checkbox.addEventListener('click', switchTag)
     container.appendChild(clone);
     return checkbox;
 }
@@ -263,6 +265,8 @@ function refreshShares() {
     }).then(function (response) {
         response.text().then(text => {
             container.innerHTML = text;
+            noteButtons = document.querySelectorAll(".left-panel-note-item");
+            noteButtons.forEach(button => button.addEventListener('click', openNote));
         });
     })
 }

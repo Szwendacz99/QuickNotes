@@ -19,12 +19,14 @@
     <div id="overlay-bg-account-menu" class="overlay-bg" onclick="switchOverlay('overlay-bg-account-menu', 'user-account-menu', 'flex')"></div>
     <div id="user-account-menu" class="overlay">
         <h2>Your account details:</h2>
-        User ID:<?= $user->getUUID() ?><br> <br>
-        Nickname: <?= $user->getUsername() ?><br>
-        Email: <?= $user->getEmail() ?><br><br>
-        <br>
-        <br>
-        <br>
+        <div class="info">
+            <h5>User ID:</h5>
+            <div><?= $user->getUUID() ?></div>
+            <h5>Username:</h5>
+            <div id="acc-details-username"><?= $user->getUsername() ?></div>
+            <h5>Email:</h5>
+            <div><?= $user->getEmail() ?></div>
+        </div>
         <div id="change-nickname-message"></div>
         <input class="default-input" id="new-nickname" placeholder="Start typing nickname">
         <button class="default-button" id="change-nickname-button"> Change nickname </button>

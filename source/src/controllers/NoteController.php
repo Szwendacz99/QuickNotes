@@ -223,14 +223,18 @@ class NoteController extends AppController {
             header('Content-type: application/json');
             http_response_code(200);
 
-            $userUUID = $this->userRepository->getUserByNickname($content->username)->getUuid();
+            $otherUserUUID = $this->userRepository->getUserByNickname($content->username)->getUuid();
+            $thisUserUUID = $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid();
 
-            if ($userUUID === $this->userRepository->getUserBySessionUUID($_COOKIE['session_id'])->getUuid()) {
+            $noteOwnerUUID = $this->noteRepository->getNoteOwner($content->note_id)->getUuid();
+
+            if ($thisUserUUID === $otherUserUUID ||
+                $thisUserUUID !== $noteOwnerUUID) {
                 echo json_encode(['result' => 'nope']);
                 return;
             }
 
-            $result = $this->noteRepository->shareNote($content->note_id, $userUUID);
+            $result = $this->noteRepository->shareNote($content->note_id, $otherUserUUID);
             if ($result) {
                 echo json_encode(['result' => 'ok']);
             }

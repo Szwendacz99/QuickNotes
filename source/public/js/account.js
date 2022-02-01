@@ -12,6 +12,15 @@ function changeNickname() {
         return response.json();
     }).then(function (result) {
         changeNickanmeMessageNode.innerHTML = result['result'];
+        if (result['result'] === 'Nickname changed successfully!') {
+            const usernameItem1 = document.querySelector("#acc-details-username");
+            usernameItem1.innerHTML = nickname;
+            const usernameItem2 = document.querySelector(".user-menu-button");
+            usernameItem2.innerHTML = nickname;
+            changeNickanmeMessageNode.style.color = "lightgreen";
+        } else {
+            changeNickanmeMessageNode.style.color = "red";
+        }
     })
 }
 

@@ -103,6 +103,7 @@ h2 {
     display: flex;
     overflow-y: auto;
     overflow-x: hidden;
+    word-break: break-word;
 }
 
 .edit-textarea-container {

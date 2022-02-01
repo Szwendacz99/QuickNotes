@@ -52,6 +52,22 @@ class NoteRepository extends Repository
         return $notes;
     }
 
+    public function getNoteOwner(string $noteUUID): ?User {
+        $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.user u INNER JOIN 
+                                                                quicknotes_schema.note n on u.user_id = n.user_id 
+                                                                    WHERE note_id = :note_id');
+        $query->bindParam(':note_id', $noteUUID, PDO::PARAM_STR);
+        $query->execute();
+
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($user == false) {
+            return null;
+        }
+
+        return new User($user['user_id'], $user['username'], $user['email'], $user['password_hash']);
+    }
+
     public function getNoteInfo(string $noteUUID) {
         $query = $this->database->connect()->prepare('SELECT * FROM quicknotes_schema.note
                                                                 WHERE note_id = :note_id');
